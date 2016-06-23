@@ -8,6 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +20,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //ImageView imgView=(ImageView)findViewById(R.id.grid_item_movie_imageview_2);
+        //Picasso.with(this).load("http://i.imgur.com/DvpvklR.png").into(imgView);
+
+        //Glide.with(this).load("http://cdn.duitang.com/uploads/item/201112/27/20111227143751_TtLkL.jpg").into(imgView);
 
 
     }
