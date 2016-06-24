@@ -2,10 +2,12 @@ package com.tanwang9408.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Movie;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -118,7 +120,14 @@ public class MainActivityFragment extends Fragment {
 
     private void refresh(){
         FetchMovieTask fetch=new FetchMovieTask();
-        fetch.execute(true);
+        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String option=prefs.getString(getString(R.string.pref_sort_key),getString((R.string.pref_sort_default)));
+        if (option.equals("popular")) {
+            fetch.execute(true);
+        }
+        else{
+            fetch.execute(false);
+        }
     }
 
     // Since there is only two options for the movie list in this project, I would use boolean to indicate user choice
