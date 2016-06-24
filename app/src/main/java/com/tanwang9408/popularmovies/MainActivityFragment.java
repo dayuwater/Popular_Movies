@@ -1,5 +1,7 @@
 package com.tanwang9408.popularmovies;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Movie;
 import android.media.Image;
 import android.net.Uri;
@@ -15,9 +17,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
@@ -71,9 +75,26 @@ public class MainActivityFragment extends Fragment {
         ,R.id.grid_item_movie_imageview,imageUrls);
         gridView.setAdapter(mMovieAdapter);
         refresh();
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent openDetail=new Intent(getActivity(),DetailActivity.class);
+                openDetail.putExtra(Intent.EXTRA_TEXT,mMovieInfo[position].toStringArray());
+
+                startActivity(openDetail);
+
+            }
+        });
 
 
         return rootView;
+    }
+
+    private void showToastMessage(String text) {
+        Context context = getContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
     @Override
