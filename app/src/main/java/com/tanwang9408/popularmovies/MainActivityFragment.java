@@ -48,8 +48,6 @@ public class MainActivityFragment extends Fragment {
 
     public static final String APPID="878337c301e790447564e6a9915721e5";
 
-    // For popular: http://api.themoviedb.org/3/movie/popular?api_key=878337c301e790447564e6a9915721e5
-    // For top rated: http://api.themoviedb.org/3/movie/top_rated?api_key=878337c301e790447564e6a9915721e5
 
     private ArrayAdapter<String> mMovieAdapter;
 
@@ -90,6 +88,12 @@ public class MainActivityFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        refresh();
     }
 
     private void showToastMessage(String text) {
