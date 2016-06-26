@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //ImageView imgView=(ImageView)findViewById(R.id.grid_item_movie_imageview_2);
-        //Picasso.with(this).load("http://i.imgur.com/DvpvklR.png").into(imgView);
+        ImageView imgView=(ImageView)findViewById(R.id.grid_item_movie_imageview_2);
+        // success! No VPN required, need to have internet permission set up
+        Picasso.with(this).load("http://cdn.duitang.com/uploads/item/201112/27/20111227143751_TtLkL.jpg").into(imgView);
 
-        //Glide.with(this).load("http://cdn.duitang.com/uploads/item/201112/27/20111227143751_TtLkL.jpg").into(imgView);
 
 
     }
