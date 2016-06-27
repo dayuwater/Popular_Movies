@@ -49,7 +49,8 @@ public class MainActivityFragment extends Fragment {
     public static final String APPID="878337c301e790447564e6a9915721e5";
 
 
-    private ArrayAdapter<String> mMovieAdapter;
+    private PicassoImageAdapter mMovieAdapter;
+    private ArrayAdapter<String> mMovieAdapter2;
 
     private MovieInfo[] mMovieInfo;
 
@@ -71,10 +72,9 @@ public class MainActivityFragment extends Fragment {
 
         List<String> imageUrls=new ArrayList<String> ();
         GridView gridView=(GridView)rootView.findViewById(R.id.gridView_movies);
-        mMovieAdapter=new ArrayAdapter<String>(getActivity(),R.layout.grid_item_movie
-        ,R.id.grid_item_movie_imageview,imageUrls);
+        mMovieAdapter=new PicassoImageAdapter(getActivity(),imageUrls);
         gridView.setAdapter(mMovieAdapter);
-        refresh();
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -85,6 +85,10 @@ public class MainActivityFragment extends Fragment {
 
             }
         });
+
+
+
+        refresh();
 
 
         return rootView;
@@ -145,7 +149,7 @@ public class MainActivityFragment extends Fragment {
             mMovieInfo= movieInfos;
             mMovieAdapter.clear();
             for(MovieInfo info : movieInfos){
-                mMovieAdapter.add(info.title);
+                mMovieAdapter.add(info.imgUrl);
             }
         }
 

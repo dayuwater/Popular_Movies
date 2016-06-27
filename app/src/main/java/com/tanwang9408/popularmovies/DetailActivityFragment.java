@@ -20,6 +20,8 @@ import com.squareup.picasso.Picasso;
  */
 public class DetailActivityFragment extends Fragment {
 
+    private static final String IMAGE_PATH= "http://image.tmdb.org/t/p/w185";
+
     public DetailActivityFragment() {
     }
 
@@ -47,7 +49,7 @@ public class DetailActivityFragment extends Fragment {
         TextView releaseView=(TextView)rootView.findViewById(R.id.releasedateView);
         releaseView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[4]);
         ImageView imageView=(ImageView)rootView.findViewById(R.id.posterView);
-        Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185"+intent.getStringArrayExtra(Intent.EXTRA_TEXT)[1])
+        Picasso.with(getContext()).load(IMAGE_PATH +intent.getStringArrayExtra(Intent.EXTRA_TEXT)[1])
         .into(imageView);
 
         return rootView;

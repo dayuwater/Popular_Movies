@@ -21,4 +21,17 @@
         android:numColumns="auto_fit"
         android:nestedScrollingEnabled="false" />
 
+    <!-->
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:id="@+id/gridView_movies_2"
+
+        android:numColumns="auto_fit"
+        android:nestedScrollingEnabled="false" />
+    <!-->
+
+
+
 </FrameLayout>
