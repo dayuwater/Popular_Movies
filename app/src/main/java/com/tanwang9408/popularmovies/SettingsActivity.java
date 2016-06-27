@@ -8,6 +8,12 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 
+
+/**
+ *  Based on the Settings Activity code snippet in the Sunshine App from the tutorial
+ *
+ */
+
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
  * <p>

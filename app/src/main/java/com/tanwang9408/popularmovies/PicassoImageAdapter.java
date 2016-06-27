@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class PicassoImageAdapter extends ArrayAdapter<String> {
     private static final String LOG_TAG=PicassoImageAdapter.class.getSimpleName();
-    private static final String IMAGE_PATH="http://image.tmdb.org/t/p/w185";
+    private static final String IMAGE_PATH="http://image.tmdb.org/t/p/w500";
     public PicassoImageAdapter(Activity context, List<String> imageUrls){
         super(context,0,imageUrls);
     }

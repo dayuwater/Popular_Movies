@@ -28,6 +28,8 @@ public class DetailActivityFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+
+
         super.onCreate(savedInstanceState);
     }
 
@@ -41,11 +43,12 @@ public class DetailActivityFragment extends Fragment {
         Intent intent=getActivity().getIntent();
         TextView plotView=(TextView)rootView.findViewById(R.id.plotView);
         plotView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[2]);
+        getActivity().setTitle(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[0]);
         TextView titleView=(TextView)rootView.findViewById(R.id.titleView);
         titleView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[0]);
 
         TextView ratingView=(TextView)rootView.findViewById(R.id.ratingView);
-        ratingView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[3]+"/10");
+        ratingView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[3]+getString(R.string.string_of_ten));
         TextView releaseView=(TextView)rootView.findViewById(R.id.releasedateView);
         releaseView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[4]);
         ImageView imageView=(ImageView)rootView.findViewById(R.id.posterView);
