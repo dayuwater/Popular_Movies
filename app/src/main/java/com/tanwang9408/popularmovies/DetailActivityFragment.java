@@ -10,7 +10,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -44,6 +47,9 @@ public class DetailActivityFragment extends Fragment {
         ratingView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[3]+"/10");
         TextView releaseView=(TextView)rootView.findViewById(R.id.releasedateView);
         releaseView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[4]);
+        ImageView imageView=(ImageView)rootView.findViewById(R.id.posterView);
+        Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185"+intent.getStringArrayExtra(Intent.EXTRA_TEXT)[1])
+        .into(imageView);
 
         return rootView;
     }

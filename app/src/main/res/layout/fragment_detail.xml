@@ -55,6 +55,12 @@
             android:id="@+id/plotView"
             android:layout_marginBottom="20dp" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/posterView"
+            android:layout_marginBottom="20dp"/>
+
 
     </LinearLayout>
 
