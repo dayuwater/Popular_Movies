@@ -15,37 +15,47 @@
         android:orientation="vertical">
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Title"
-            android:id="@+id/titleView"
-            android:layout_marginBottom="20dp" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Rating"
-            android:id="@+id/ratingView"
-            android:layout_marginBottom="20dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Title"
+                android:id="@+id/titleView"
+                android:layout_marginBottom="20dp"
+                android:gravity="top"
+                android:layout_gravity="top|left" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Release Date"
-            android:id="@+id/releasedateView"
-            android:layout_marginBottom="20dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Rating"
+                android:id="@+id/ratingView"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="left|bottom" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Poster URL"
-            android:id="@+id/posterURLView"
-            android:layout_marginBottom="20dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Release Date"
+                android:id="@+id/releasedateView"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="left|center_vertical" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/posterView"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="top|right" />
+
+
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -55,11 +65,6 @@
             android:id="@+id/plotView"
             android:layout_marginBottom="20dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/posterView"
-            android:layout_marginBottom="20dp"/>
 
 
     </LinearLayout>

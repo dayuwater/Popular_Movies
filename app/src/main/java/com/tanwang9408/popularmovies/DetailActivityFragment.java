@@ -41,8 +41,7 @@ public class DetailActivityFragment extends Fragment {
         plotView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[2]);
         TextView titleView=(TextView)rootView.findViewById(R.id.titleView);
         titleView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[0]);
-        TextView urlView=(TextView)rootView.findViewById(R.id.posterURLView);
-        urlView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[1]);
+
         TextView ratingView=(TextView)rootView.findViewById(R.id.ratingView);
         ratingView.setText(intent.getStringArrayExtra(Intent.EXTRA_TEXT)[3]+"/10");
         TextView releaseView=(TextView)rootView.findViewById(R.id.releasedateView);
