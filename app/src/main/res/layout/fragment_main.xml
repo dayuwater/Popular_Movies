@@ -9,10 +9,34 @@
     tools:context="com.tanwang9408.popularmovies.MainActivityFragment"
     tools:showIn="@layout/activity_main">
 
+
+
+
     <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:id="@+id/gridView_movies"
 
-        />
+        android:numColumns="3"
+        android:nestedScrollingEnabled="false"
+        android:horizontalSpacing="0dp"
+        android:stretchMode="columnWidth"
+        android:padding="0dp"
+        android:verticalSpacing="0dp"
+        android:touchscreenBlocksFocus="true" />
+
+    <!-->
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:id="@+id/gridView_movies_2"
+
+        android:numColumns="auto_fit"
+        android:nestedScrollingEnabled="false" />
+    <!-->
+
+
+
 </FrameLayout>
