@@ -47,7 +47,7 @@ import java.util.List;
 public class MainActivityFragment extends Fragment {
 
     public static final String APPID=AppID.API;
-
+    // started content provider
 
     private PicassoImageAdapter mMovieAdapter;
     private ArrayAdapter<String> mMovieAdapter2;
