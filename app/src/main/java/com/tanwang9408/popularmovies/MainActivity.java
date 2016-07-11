@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Stetho.initializeWithDefaults(this);
+
         //OkHttpClient client = new OkHttpClient();
         //client.networkInterceptors().add(new StethoInterceptor());
 
