@@ -23,13 +23,15 @@ public class TestDb extends AndroidTestCase {
 
     // Since we want each test to start with a clean slate
     void deleteTheDatabase() {
-        mContext.deleteDatabase(WeatherDbHelper.DATABASE_NAME);
+        mContext.deleteDatabase(MovieDbHelper.DATABASE_NAME);
     }
 
     /*
         This function gets called before each test is executed to delete the database.  This makes
         sure that we always have a clean test.
      */
+
+    // TODO: Modify the test for this project
     public void setUp() {
         deleteTheDatabase();
     }

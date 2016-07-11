@@ -21,7 +21,7 @@ import android.text.format.Time;
 /**
  * Defines table and column names for the weather database.
  */
-public class WeatherContract {
+public class MovieContract {
 
     // To make it easy to query for the exact date, we normalize all dates that go into
     // the database to the start of the the Julian day at UTC.
@@ -38,6 +38,11 @@ public class WeatherContract {
         Students: This is where you will add the strings.  (Similar to what has been
         done for WeatherEntry)
      */
+
+    // TODO: Add a table for the movies
+
+    // TODO: Add a table for the trailers
+    // TODO: Add a table for the comments
     public static final class LocationEntry implements BaseColumns {
         public static final String TABLE_NAME = "location";
 

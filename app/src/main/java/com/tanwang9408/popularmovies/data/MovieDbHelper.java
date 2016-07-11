@@ -19,23 +19,24 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.tanwang9408.popularmovies.data.WeatherContract.LocationEntry;
-import com.tanwang9408.popularmovies.data.WeatherContract.WeatherEntry;
+import com.tanwang9408.popularmovies.data.MovieContract.LocationEntry;
+import com.tanwang9408.popularmovies.data.MovieContract.WeatherEntry;
 
 /**
  * Manages a local database for weather data.
  */
-public class WeatherDbHelper extends SQLiteOpenHelper {
+public class MovieDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 2;
 
     static final String DATABASE_NAME = "weather.db";
 
-    public WeatherDbHelper(Context context) {
+    public MovieDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // TODO: Update this method for this project
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + WeatherEntry.TABLE_NAME + " (" +
@@ -71,6 +72,8 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
     }
+
+    // TODO: Update this method for this project
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
