@@ -42,22 +42,21 @@ public class TestUtilities extends AndroidTestCase {
     }
 
     /*
-        Students: Use this to create some default weather values for your database tests.
+        Students: Use this to create some default movie values for your database tests.
      */
-    static ContentValues createWeatherValues(long locationRowId) {
-        ContentValues weatherValues = new ContentValues();
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, locationRowId);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, TEST_DATE);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, 1.1);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, 1.2);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, 1.3);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, 75);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, 65);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC, "Asteroids");
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, 5.5);
-        weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, 321);
+    static ContentValues createMovieValues(long movieRowId) {
+        ContentValues movieValues = new ContentValues();
+        movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_KEY, movieRowId);
+        movieValues.put(MovieContract.MovieEntry.COLUMN_ADULT, false);
+        movieValues.put(MovieContract.MovieEntry.COLUMN_LANGUAGE, "en");
+        movieValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, "overview");
+        movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, "path");
+        movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, "2012/12/23");
+        movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, "title");
+        movieValues.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, 99.9);
 
-        return weatherValues;
+
+        return movieValues;
     }
 
     /*
