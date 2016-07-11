@@ -46,7 +46,7 @@ import java.util.List;
  */
 public class MainActivityFragment extends Fragment {
 
-    public static final String APPID="Enter Your own APP key here";
+    public static final String APPID=AppID.API;
 
 
     private PicassoImageAdapter mMovieAdapter;
