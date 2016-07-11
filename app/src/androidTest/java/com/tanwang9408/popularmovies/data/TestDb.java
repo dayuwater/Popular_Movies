@@ -181,6 +181,108 @@ public class TestDb extends AndroidTestCase {
         also make use of the ValidateCurrentRecord function from within TestUtilities.
     */
     public void testMovieTable() {
+        insertMovie();
+
+
+    }
+
+    /*
+        Students:  Here is where you will build code to test that we can insert and query the
+        database.  We've done a lot of work for you.  You'll want to look in TestUtilities
+        where you can use the "createWeatherValues" function.  You can
+        also make use of the validateCurrentRecord function from within TestUtilities.
+     */
+    public void testTrailerTable() {
+        // First insert the location, and then use the locationRowId to insert
+        // the weather. Make sure to cover as many failure cases as you can.
+
+        // Instead of rewriting all of the code we've already written in testLocationTable
+        // we can move this code to insertLocation and then call insertLocation from both
+        // tests. Why move it? We need the code to return the ID of the inserted location
+        // and our testLocationTable can only return void because it's a test.
+        long movieRowId;
+        movieRowId=insertMovie();
+        if(movieRowId==-1){
+            fail("Null pointer returned");
+            return;
+        }
+
+
+
+        // First step: Get reference to writable database
+        MovieDbHelper dbHelper=new MovieDbHelper(mContext);
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+
+        // Create ContentValues of what you want to insert
+        // (you can use the createWeatherValues TestUtilities function if you wish)
+        ContentValues cv=TestUtilities.createTrailerValues(movieRowId);
+
+        // Insert ContentValues into database and get a row ID back
+        long rowId=db.insert(MovieContract.TrailerEntry.TABLE_NAME,null,cv);
+
+        // Query the database and receive a Cursor back
+        Cursor c=db.query(MovieContract.TrailerEntry.TABLE_NAME,null,null,null,null,null,null);
+
+        // Move the cursor to a valid database row
+        assertTrue( "Error: No Records returned from movie query", c.moveToFirst() );
+
+
+
+        // Validate data in resulting Cursor with the original ContentValues
+        // (you can use the validateCurrentRecord function in TestUtilities to validate the
+        // query if you like)
+        TestUtilities.validateCurrentRecord("Error: Trailer Query Validation Failed",c,cv);
+        assertFalse( "Error: More than one record returned from trailer query",c.moveToNext());
+
+
+        // Finally, close the cursor and database
+        c.close();
+        db.close();
+
+    }
+
+    public void testReviewTable(){
+        long movieRowId;
+        movieRowId=insertMovie();
+        if(movieRowId==-1){
+            fail("Null pointer returned");
+            return;
+        }
+
+        MovieDbHelper dbHelper=new MovieDbHelper(mContext);
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+
+        ContentValues cv=TestUtilities.createReviewVaules(movieRowId);
+
+        long rowId=db.insert(MovieContract.ReviewEntry.TABLE_NAME,null,cv);
+
+        Cursor c=db.query(MovieContract.ReviewEntry.TABLE_NAME,null,null,null,null,null,null);
+
+        assertTrue( "Error: No Records returned from movie query", c.moveToFirst() );
+
+        TestUtilities.validateCurrentRecord("Error: Review Query Validation Failed",c,cv);
+        assertFalse( "Error: More than one record returned from review query",c.moveToNext());
+
+        c.close();
+        db.close();
+
+
+
+
+
+
+
+
+
+    }
+
+
+    /*
+        Students: This is a helper method for the testWeatherTable quiz. You can move your
+        code from testLocationTable to here so that you can call this code from both
+        testWeatherTable and testLocationTable.
+     */
+    public long insertMovie() {
         // First step: Get reference to writable database
         MovieDbHelper dbHelper=new MovieDbHelper(mContext);
         SQLiteDatabase db=dbHelper.getWritableDatabase();
@@ -191,7 +293,8 @@ public class TestDb extends AndroidTestCase {
 
         // Insert ContentValues into database and get a row ID back
         long movieRowId;
-        movieRowId=db.insert(MovieContract.MovieEntry.TABLE_NAME,null,testValues);
+        movieRowId=TestUtilities.insertOneMovie(mContext);
+
         assertTrue(movieRowId!=-1);
         // Query the database and receive a Cursor back
         Cursor c=db.query(MovieContract.MovieEntry.TABLE_NAME,null,null,null,null,null,null);
@@ -212,52 +315,6 @@ public class TestDb extends AndroidTestCase {
         c.close();
         db.close();
 
-    }
-
-    /*
-        Students:  Here is where you will build code to test that we can insert and query the
-        database.  We've done a lot of work for you.  You'll want to look in TestUtilities
-        where you can use the "createWeatherValues" function.  You can
-        also make use of the validateCurrentRecord function from within TestUtilities.
-     */
-    public void testTrailerTable() {
-        // First insert the location, and then use the locationRowId to insert
-        // the weather. Make sure to cover as many failure cases as you can.
-
-        // Instead of rewriting all of the code we've already written in testLocationTable
-        // we can move this code to insertLocation and then call insertLocation from both
-        // tests. Why move it? We need the code to return the ID of the inserted location
-        // and our testLocationTable can only return void because it's a test.
-
-        // First step: Get reference to writable database
-
-        // Create ContentValues of what you want to insert
-        // (you can use the createWeatherValues TestUtilities function if you wish)
-
-        // Insert ContentValues into database and get a row ID back
-
-        // Query the database and receive a Cursor back
-
-        // Move the cursor to a valid database row
-
-        // Validate data in resulting Cursor with the original ContentValues
-        // (you can use the validateCurrentRecord function in TestUtilities to validate the
-        // query if you like)
-
-        // Finally, close the cursor and database
-    }
-
-    public void testReviewTable(){
-
-    }
-
-
-    /*
-        Students: This is a helper method for the testWeatherTable quiz. You can move your
-        code from testLocationTable to here so that you can call this code from both
-        testWeatherTable and testLocationTable.
-     */
-    public long insertMovie() {
-        return -1L;
+        return movieRowId;
     }
 }
