@@ -33,6 +33,7 @@ public class PicassoImageAdapter extends ArrayAdapter<String> {
         }
 
         ImageView imgView=(ImageView)convertView.findViewById(R.id.grid_item_movie_imageview);
+        Picasso.with(getContext()).setIndicatorsEnabled(true);
         Picasso.with(getContext()).load(IMAGE_PATH+imageUrl).into(imgView);
 
         return convertView;
