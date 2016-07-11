@@ -179,7 +179,7 @@ public class TestDb extends AndroidTestCase {
         where you can uncomment out the "createNorthPoleLocationValues" function.  You can
         also make use of the ValidateCurrentRecord function from within TestUtilities.
     */
-    public void testLocationTable() {
+    public void testMovieTable() {
         // First step: Get reference to writable database
 
         // Create ContentValues of what you want to insert
@@ -205,7 +205,7 @@ public class TestDb extends AndroidTestCase {
         where you can use the "createWeatherValues" function.  You can
         also make use of the validateCurrentRecord function from within TestUtilities.
      */
-    public void testWeatherTable() {
+    public void testTrailerTable() {
         // First insert the location, and then use the locationRowId to insert
         // the weather. Make sure to cover as many failure cases as you can.
 
@@ -232,13 +232,17 @@ public class TestDb extends AndroidTestCase {
         // Finally, close the cursor and database
     }
 
+    public void testReviewTable(){
+
+    }
+
 
     /*
         Students: This is a helper method for the testWeatherTable quiz. You can move your
         code from testLocationTable to here so that you can call this code from both
         testWeatherTable and testLocationTable.
      */
-    public long insertLocation() {
+    public long insertMovie() {
         return -1L;
     }
 }

@@ -1,8 +1,10 @@
 package com.tanwang9408.popularmovies.data;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -44,54 +46,76 @@ public class TestUtilities extends AndroidTestCase {
     /*
         Students: Use this to create some default movie values for your database tests.
      */
-    static ContentValues createMovieValues(long movieRowId) {
+    static ContentValues createTrailerValues(long movieRowId) {
         ContentValues movieValues = new ContentValues();
-        movieValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_KEY, movieRowId);
-        movieValues.put(MovieContract.MovieEntry.COLUMN_ADULT, false);
-        movieValues.put(MovieContract.MovieEntry.COLUMN_LANGUAGE, "en");
-        movieValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, "overview");
-        movieValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, "path");
-        movieValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, "2012/12/23");
-        movieValues.put(MovieContract.MovieEntry.COLUMN_TITLE, "title");
-        movieValues.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, 99.9);
+        movieValues.put(MovieContract.TrailerEntry.COLUMN_MOVIE_KEY, movieRowId);
+        movieValues.put(MovieContract.TrailerEntry.COLUMN_TRAILER_KEY, "dhjewdewd");
+        movieValues.put(MovieContract.TrailerEntry.COLUMN_ISO_639_1, "6391");
+        movieValues.put(MovieContract.TrailerEntry.COLUMN_ISO_3166_1, "31661");
+        movieValues.put(MovieContract.TrailerEntry.COLUMN_KEA_TRAILOR, "keat");
+        movieValues.put(MovieContract.TrailerEntry.COLUMN_NAME, "name");
+        movieValues.put(MovieContract.TrailerEntry.COLUMN_SITE, "site");
+        movieValues.put(MovieContract.TrailerEntry.COLUMN_SIZE, 1024);
+        movieValues.put(MovieContract.TrailerEntry.COLUMN_TYPE, "type");
+
+
 
 
         return movieValues;
+    }
+    
+    static ContentValues createReviewVaules(long movieRowId){
+        ContentValues movieValues = new ContentValues();
+        movieValues.put(MovieContract.ReviewEntry.COLUMN_MOVIE_KEY, movieRowId);
+        movieValues.put(MovieContract.ReviewEntry.COLUMN_REVIEW_KEY, "jshbqdjhjd");
+        movieValues.put(MovieContract.ReviewEntry.COLUMN_AUTHOR, "author");
+        movieValues.put(MovieContract.ReviewEntry.COLUMN_CONTENT, "content");
+        movieValues.put(MovieContract.ReviewEntry.COLUMN_URL, "url");
+        
+
+
+        return movieValues;
+        
     }
 
     /*
         Students: You can uncomment this helper function once you have finished creating the
         LocationEntry part of the WeatherContract.
      */
-//    static ContentValues createNorthPoleLocationValues() {
-//        // Create a new map of values, where column names are the keys
-//        ContentValues testValues = new ContentValues();
-//        testValues.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, TEST_LOCATION);
-//        testValues.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, "North Pole");
-//        testValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, 64.7488);
-//        testValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, -147.353);
-//
-//        return testValues;
-//    }
+    static ContentValues createOneMovie() {
+        // Create a new map of values, where column names are the keys
+        ContentValues testValues = new ContentValues();
+        testValues.put(MovieContract.MovieEntry.COLUMN_TITLE, "Title");
+        testValues.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, 99.9);
+        testValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE,"2012/12/12");
+        testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_KEY, 223344);
+        testValues.put(MovieContract.MovieEntry.COLUMN_ADULT, false);
+        testValues.put(MovieContract.MovieEntry.COLUMN_LANGUAGE, "en");
+        testValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, "overview");
+        testValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, "path");
+
+
+        return testValues;
+    }
 
     /*
         Students: You can uncomment this function once you have finished creating the
         LocationEntry part of the WeatherContract as well as the WeatherDbHelper.
      */
-//    static long insertNorthPoleLocationValues(Context context) {
-//        // insert our test records into the database
-//        WeatherDbHelper dbHelper = new WeatherDbHelper(context);
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//        ContentValues testValues = TestUtilities.createNorthPoleLocationValues();
-//
-//        long locationRowId;
-//        locationRowId = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, testValues);
-//
-//        // Verify we got a row back.
-//        assertTrue("Error: Failure to insert North Pole Location Values", locationRowId != -1);
-//
-//        return locationRowId;
-//    }
+    static long insertOneMovie(Context context) {
+        // insert our test records into the database
+        MovieDbHelper dbHelper = new MovieDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues testValues = TestUtilities.createOneMovie();
+
+        long locationRowId;
+        locationRowId = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, testValues);
+
+        // Verify we got a row back.
+        assertTrue("Error: Failure to insert North Pole Location Values", locationRowId != -1);
+
+        return locationRowId;
+    }
 
     /*
         Students: The functions we provide inside of TestProvider use this utility class to test
