@@ -15,6 +15,7 @@
  */
 package com.tanwang9408.popularmovies.data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
@@ -181,21 +182,35 @@ public class TestDb extends AndroidTestCase {
     */
     public void testMovieTable() {
         // First step: Get reference to writable database
+        MovieDbHelper dbHelper=new MovieDbHelper(mContext);
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
 
         // Create ContentValues of what you want to insert
         // (you can use the createNorthPoleLocationValues if you wish)
+        ContentValues testValues=TestUtilities.createOneMovie();
 
         // Insert ContentValues into database and get a row ID back
-
+        long movieRowId;
+        movieRowId=db.insert(MovieContract.MovieEntry.TABLE_NAME,null,testValues);
+        assertTrue(movieRowId!=-1);
         // Query the database and receive a Cursor back
+        Cursor c=db.query(MovieContract.MovieEntry.TABLE_NAME,null,null,null,null,null,null);
+
 
         // Move the cursor to a valid database row
+        assertTrue( "Error: No Records returned from movie query", c.moveToFirst() );
 
         // Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
+        TestUtilities.validateCurrentRecord("Error: Movie Query Validation Failed",c,testValues);
+        assertFalse( "Error: More than one record returned from movie query",c.moveToNext());
+
+
 
         // Finally, close the cursor and database
+        c.close();
+        db.close();
 
     }
 
