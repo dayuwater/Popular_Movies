@@ -25,6 +25,8 @@ public class MovieContract {
 
     // To make it easy to query for the exact date, we normalize all dates that go into
     // the database to the start of the the Julian day at UTC.
+
+    // perhaps this is useless in this project, but keep it here for now
     public static long normalizeDate(long startDate) {
         // normalize the start date to the beginning of the (UTC) day
         Time time = new Time();
@@ -40,9 +42,61 @@ public class MovieContract {
      */
 
     // TODO: Add a table for the movies
+    public static final class MovieEntry implements BaseColumns {
+        // name
+        public static final String TABLE_NAME = "movie";
+        // foreign key related
+        public static final String COLUMN_MOVIE_KEY="movie_api_id";
+
+        // other fields
+        public static final String COLUMN_POSTER_PATH="poster_path";
+        public static final String COLUMN_ADULT="adult";
+        public static final String COLUMN_OVERVIEW="overview";
+        public static final String COLUMN_RELEASE_DATE="release_date";
+        public static final String COLUMN_TITLE="title";
+        public static final String COLUMN_VOTE_AVERAGE="vote_average";
+        public static final String COLUMN_LANGUAGE="language";
+
+
+    }
 
     // TODO: Add a table for the trailers
-    // TODO: Add a table for the comments
+    public static final class TrailerEntry implements BaseColumns {
+        // name
+        public static final String TABLE_NAME = "trailer";
+        // foreign key related
+        public static final String COLUMN_TRAILER_KEY="trailer_api_id";
+        public static final String COLUMN_MOVIE_KEY="movie_id";
+        // other fields
+        public static final String COLUMN_ISO_639_1="iso_639_1";
+        public static final String COLUMN_ISO_3166_1="iso_3166_1";
+        // intentional typo to distinguish this from the real id (trailer_id)
+        public static final String COLUMN_KEA_TRAILOR="trailer_api_key";
+        public static final String COLUMN_NAME="name";
+        public static final String COLUMN_SITE="site";
+        public static final String COLUMN_SIZE="size";
+        public static final String COLUMN_TYPE="type";
+
+
+
+
+
+    }
+    // TODO: Add a table for the reviews
+    public static final class ReviewEntry implements BaseColumns {
+        // name
+        public static final String TABLE_NAME = "review";
+        // foreign key related
+        public static final String COLUMN_REVIEW_KEY="review_api_id";
+        public static final String COLUMN_MOVIE_KEY="movie_id";
+        // other fields
+        public static final String COLUMN_AUTHOR="author";
+        public static final String COLUMN_CONTENT="content";
+        public static final String COLUMN_URL="url";
+
+
+
+    }
     public static final class LocationEntry implements BaseColumns {
         public static final String TABLE_NAME = "location";
 
