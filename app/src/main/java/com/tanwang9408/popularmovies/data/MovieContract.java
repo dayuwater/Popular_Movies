@@ -120,7 +120,7 @@ public class MovieContract {
         }
 
         public static Uri buildTrailerMovie(String movieApiId) {
-            return null;
+            return CONTENT_URI.buildUpon().appendPath(movieApiId).build();
         }
 
 
