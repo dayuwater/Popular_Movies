@@ -21,8 +21,9 @@ import java.util.Set;
     in our solution to use these as-given.
  */
 public class TestUtilities extends AndroidTestCase {
-    static final String TEST_LOCATION = "99705";
-    static final long TEST_DATE = 1419033600L;  // December 20th, 2014
+    static final String TEST_MOVIE = "223344";
+    static final String TEST_TRAILER_ID = "trailer_api_id";  // December 20th, 2014
+    static final String TEST_REVIEW_ID="review_api_id";
 
     static void validateCursor(String error, Cursor valueCursor, ContentValues expectedValues) {
         assertTrue("Empty cursor returned. " + error, valueCursor.moveToFirst());
@@ -70,7 +71,7 @@ public class TestUtilities extends AndroidTestCase {
     static ContentValues createTrailerValues(long movieRowId) {
         ContentValues movieValues = new ContentValues();
         movieValues.put(MovieContract.TrailerEntry.COLUMN_MOVIE_KEY, movieRowId);
-        movieValues.put(MovieContract.TrailerEntry.COLUMN_TRAILER_KEY, "dhjewdewd");
+        movieValues.put(MovieContract.TrailerEntry.COLUMN_TRAILER_KEY, TEST_TRAILER_ID);
         movieValues.put(MovieContract.TrailerEntry.COLUMN_ISO_639_1, "6391");
         movieValues.put(MovieContract.TrailerEntry.COLUMN_ISO_3166_1, "31661");
         movieValues.put(MovieContract.TrailerEntry.COLUMN_KEA_TRAILOR, "keat");
@@ -88,7 +89,7 @@ public class TestUtilities extends AndroidTestCase {
     static ContentValues createReviewVaules(long movieRowId){
         ContentValues movieValues = new ContentValues();
         movieValues.put(MovieContract.ReviewEntry.COLUMN_MOVIE_KEY, movieRowId);
-        movieValues.put(MovieContract.ReviewEntry.COLUMN_REVIEW_KEY, "jshbqdjhjd");
+        movieValues.put(MovieContract.ReviewEntry.COLUMN_REVIEW_KEY, TEST_REVIEW_ID);
         movieValues.put(MovieContract.ReviewEntry.COLUMN_AUTHOR, "author");
         movieValues.put(MovieContract.ReviewEntry.COLUMN_CONTENT, "content");
         movieValues.put(MovieContract.ReviewEntry.COLUMN_URL, "url");

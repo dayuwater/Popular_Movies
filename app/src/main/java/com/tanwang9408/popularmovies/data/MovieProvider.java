@@ -135,12 +135,12 @@ public class MovieProvider extends ContentProvider {
     private Cursor getTrailerByMovieIdAndTrailerId(
             Uri uri, String[] projection, String sortOrder) {
         String locationSetting = MovieContract.TrailerEntry.getMovieIdFromUri(uri);
-        long date = MovieContract.TrailerEntry.getTrailerIdFromUri(uri);
+        String id = MovieContract.TrailerEntry.getTrailerIdFromUri(uri);
 
         return sTrailerByMovieIdQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 sMovieAndTrailerIdSelection,
-                new String[]{locationSetting, Long.toString(date)},
+                new String[]{locationSetting, id},
                 null,
                 null,
                 sortOrder
@@ -183,12 +183,12 @@ public class MovieProvider extends ContentProvider {
     private Cursor getReviewByMovieIdAndReviewId(
             Uri uri, String[] projection, String sortOrder) {
         String locationSetting = MovieContract.ReviewEntry.getMovieIdFromUri(uri);
-        long date = MovieContract.ReviewEntry.getReviewIdFromUri(uri);
+        String id = MovieContract.ReviewEntry.getReviewIdFromUri(uri);
 
         return sReviewByMovieIdQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 sMovieAndReviewIdSelection,
-                new String[]{locationSetting, Long.toString(date)},
+                new String[]{locationSetting, id},
                 null,
                 null,
                 sortOrder
