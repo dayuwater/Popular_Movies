@@ -37,6 +37,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity"/>
         </activity>
+        <provider
+            android:authorities="com.tanwang9408.popularmovies"
+            android:name=".data.MovieProvider"/>
+
     </application>
 
 </manifest>
