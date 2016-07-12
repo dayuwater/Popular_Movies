@@ -279,30 +279,33 @@ public class MovieProvider extends ContentProvider {
         // and query the database accordingly.
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
-            // "weather/*/*"
+
             case TRAILER_WITH_MOVIE_AND_TRAILER_ID:
             {
                 retCursor = getTrailerByMovieIdAndTrailerId(uri, projection, sortOrder);
                 break;
             }
-            // "weather/*"
+
             case TRAILER_WITH_MOVIE: {
                 retCursor = getTrailerByMovieId(uri, projection, sortOrder);
                 break;
             }
-            // "weather"
+
             case TRAILER: {
-                retCursor = null;
+                retCursor = mOpenHelper.getReadableDatabase().query(MovieContract.TrailerEntry.TABLE_NAME
+                ,projection,selection,selectionArgs,null,null,sortOrder);
                 break;
             }
-            // "location"
+
             case MOVIE: {
-                retCursor = null;
+                retCursor = mOpenHelper.getReadableDatabase().query(MovieContract.MovieEntry.TABLE_NAME
+                        ,projection,selection,selectionArgs,null,null,sortOrder);
                 break;
             }
 
             case REVIEW: {
-                retCursor = null;
+                retCursor = mOpenHelper.getReadableDatabase().query(MovieContract.ReviewEntry.TABLE_NAME
+                        ,projection,selection,selectionArgs,null,null,sortOrder);
                 break;
             }
             case REVIEW_WITH_MOVIE: {
