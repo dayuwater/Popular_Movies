@@ -251,12 +251,22 @@ public class MovieProvider extends ContentProvider {
 
         switch (match) {
             // Student: Uncomment and fill out these two cases
-//            case WEATHER_WITH_LOCATION_AND_DATE:
-//            case WEATHER_WITH_LOCATION:
+//
             case MOVIE:
                 return MovieContract.MovieEntry.CONTENT_TYPE;
             case TRAILER:
                 return MovieContract.TrailerEntry.CONTENT_TYPE;
+            case TRAILER_WITH_MOVIE:
+                return MovieContract.TrailerEntry.CONTENT_TYPE;
+            case TRAILER_WITH_MOVIE_AND_TRAILER_ID:
+                return MovieContract.TrailerEntry.CONTENT_ITEM_TYPE;
+            case REVIEW:
+                return MovieContract.ReviewEntry.CONTENT_TYPE;
+            case REVIEW_WITH_MOVIE:
+                return MovieContract.ReviewEntry.CONTENT_TYPE;
+            case REVIEW_WITH_MOVIE_AND_REVIEW_ID:
+                return MovieContract.ReviewEntry.CONTENT_ITEM_TYPE;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
