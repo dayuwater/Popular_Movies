@@ -178,8 +178,9 @@ public class MovieContract {
         }
 
         public static Uri buildReviewMovie(String movieApiId) {
-            return null;
+            return CONTENT_URI.buildUpon().appendPath(movieApiId).build();
         }
+
 
 
 

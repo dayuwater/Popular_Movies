@@ -24,7 +24,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
-public class WeatherProvider extends ContentProvider {
+public class MovieProvider extends ContentProvider {
 
     // The URI Matcher used by this content provider.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -204,14 +204,28 @@ public class WeatherProvider extends ContentProvider {
     static UriMatcher buildUriMatcher() {
         // 1) The code passed into the constructor represents the code to return for the root
         // URI.  It's common to use NO_MATCH as the code for this case. Add the constructor below.
+        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = MovieContract.CONTENT_AUTHORITY;
+
 
 
         // 2) Use the addURI function to match each of the types.  Use the constants from
         // WeatherContract to help define the types to the UriMatcher.
+        matcher.addURI(authority, MovieContract.PATH_TRAILER, TRAILER);
+        matcher.addURI(authority, MovieContract.PATH_TRAILER + "/*", TRAILER_WITH_MOVIE);
+        matcher.addURI(authority, MovieContract.PATH_TRAILER + "/*/*", TRAILER_WITH_MOVIE_AND_TRAILER_ID);
+
+        matcher.addURI(authority, MovieContract.PATH_REVIEW, REVIEW);
+        matcher.addURI(authority, MovieContract.PATH_REVIEW + "/*", REVIEW_WITH_MOVIE);
+        matcher.addURI(authority, MovieContract.PATH_REVIEW + "/*/*", REVIEW_WITH_MOVIE_AND_REVIEW_ID);
+
+        matcher.addURI(authority, MovieContract.PATH_MOVIE, MOVIE);
+
+
 
 
         // 3) Return the new matcher!
-        return null;
+        return matcher;
     }
 
     /*
