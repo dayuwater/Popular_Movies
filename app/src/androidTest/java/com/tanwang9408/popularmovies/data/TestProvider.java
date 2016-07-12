@@ -20,8 +20,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
-import com.example.android.sunshine.app.data.WeatherContract.LocationEntry;
-import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
+import com.tanwang9408.popularmovies.data.MovieContract.MovieEntry;
+import com.tanwang9408.popularmovies.data.MovieContract.TrailerEntry;
+import com.tanwang9408.popularmovies.data.MovieContract.ReviewEntry;
+
 
 /*
     Note: This is not a complete set of tests of the Sunshine ContentProvider, but it does test
@@ -45,34 +47,50 @@ public class TestProvider extends AndroidTestCase {
      */
     public void deleteAllRecordsFromProvider() {
         mContext.getContentResolver().delete(
-                WeatherEntry.CONTENT_URI,
+                TrailerEntry.CONTENT_URI,
                 null,
                 null
         );
         mContext.getContentResolver().delete(
-                LocationEntry.CONTENT_URI,
+                MovieEntry.CONTENT_URI,
+                null,
+                null
+        );
+
+        mContext.getContentResolver().delete(
+                ReviewEntry.CONTENT_URI,
                 null,
                 null
         );
 
         Cursor cursor = mContext.getContentResolver().query(
-                WeatherEntry.CONTENT_URI,
+                TrailerEntry.CONTENT_URI,
                 null,
                 null,
                 null,
                 null
         );
-        assertEquals("Error: Records not deleted from Weather table during delete", 0, cursor.getCount());
+        assertEquals("Error: Records not deleted from Trailer table during delete", 0, cursor.getCount());
         cursor.close();
 
         cursor = mContext.getContentResolver().query(
-                LocationEntry.CONTENT_URI,
+                MovieEntry.CONTENT_URI,
                 null,
                 null,
                 null,
                 null
         );
-        assertEquals("Error: Records not deleted from Location table during delete", 0, cursor.getCount());
+        assertEquals("Error: Records not deleted from Movie table during delete", 0, cursor.getCount());
+        cursor.close();
+
+        cursor = mContext.getContentResolver().query(
+                ReviewEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+        assertEquals("Error: Records not deleted from Review table during delete", 0, cursor.getCount());
         cursor.close();
     }
 
@@ -82,11 +100,12 @@ public class TestProvider extends AndroidTestCase {
        delete functionality is available in the ContentProvider.
      */
     public void deleteAllRecordsFromDB() {
-        WeatherDbHelper dbHelper = new WeatherDbHelper(mContext);
+        MovieDbHelper dbHelper = new MovieDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        db.delete(WeatherEntry.TABLE_NAME, null, null);
-        db.delete(LocationEntry.TABLE_NAME, null, null);
+        db.delete(MovieEntry.TABLE_NAME, null, null);
+        db.delete(TrailerEntry.TABLE_NAME, null, null);
+        db.delete(ReviewEntry.TABLE_NAME, null, null);
         db.close();
     }
 
@@ -429,28 +448,28 @@ public class TestProvider extends AndroidTestCase {
 //    }
 
 
-    static private final int BULK_INSERT_RECORDS_TO_INSERT = 10;
-    static ContentValues[] createBulkInsertWeatherValues(long locationRowId) {
-        long currentTestDate = TestUtilities.TEST_DATE;
-        long millisecondsInADay = 1000*60*60*24;
-        ContentValues[] returnContentValues = new ContentValues[BULK_INSERT_RECORDS_TO_INSERT];
-
-        for ( int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++, currentTestDate+= millisecondsInADay ) {
-            ContentValues weatherValues = new ContentValues();
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, locationRowId);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, currentTestDate);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, 1.1);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, 1.2 + 0.01 * (float) i);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, 1.3 - 0.01 * (float) i);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, 75 + i);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, 65 - i);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC, "Asteroids");
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, 5.5 + 0.2 * (float) i);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, 321);
-            returnContentValues[i] = weatherValues;
-        }
-        return returnContentValues;
-    }
+//    static private final int BULK_INSERT_RECORDS_TO_INSERT = 10;
+//    static ContentValues[] createBulkInsertWeatherValues(long locationRowId) {
+//        long currentTestDate = TestUtilities.TEST_DATE;
+//        long millisecondsInADay = 1000*60*60*24;
+//        ContentValues[] returnContentValues = new ContentValues[BULK_INSERT_RECORDS_TO_INSERT];
+//
+//        for ( int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++, currentTestDate+= millisecondsInADay ) {
+//            ContentValues weatherValues = new ContentValues();
+//            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, locationRowId);
+//            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, currentTestDate);
+//            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, 1.1);
+//            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, 1.2 + 0.01 * (float) i);
+//            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, 1.3 - 0.01 * (float) i);
+//            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, 75 + i);
+//            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, 65 - i);
+//            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC, "Asteroids");
+//            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, 5.5 + 0.2 * (float) i);
+//            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, 321);
+//            returnContentValues[i] = weatherValues;
+//        }
+//        return returnContentValues;
+//    }
 
     // Student: Uncomment this test after you have completed writing the BulkInsert functionality
     // in your provider.  Note that this test will work with the built-in (default) provider
