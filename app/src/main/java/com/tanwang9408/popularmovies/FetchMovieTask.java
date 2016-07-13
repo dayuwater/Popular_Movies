@@ -15,15 +15,21 @@
  */
 package com.tanwang9408.popularmovies;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+
+import com.tanwang9408.popularmovies.data.MovieContract;
+import com.tanwang9408.popularmovies.data.MovieContract.MovieEntry;
+import com.tanwang9408.popularmovies.data.MovieContract.ReviewEntry;
 
 import com.tanwang9408.popularmovies.data.MovieContract.TrailerEntry;
 
@@ -134,7 +140,52 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
             forecastJsonStr = buffer.toString();
 
             JSONObject jo=new JSONObject(forecastJsonStr);
-            int arrLength=jo.getJSONArray("results").length();
+            JSONArray movieArray=jo.getJSONArray("results");
+            int arrLength=movieArray.length();
+            // the movie data should be ready at this point
+            // begin enter the data into database
+
+            Vector<ContentValues> cVVector = new Vector<ContentValues>(arrLength);
+            // insert into the movie database
+            for(int i = 0; i < arrLength; i++) {
+
+                ContentValues movieValues = new ContentValues();
+
+                movieValues.put(MovieEntry.COLUMN_TITLE, jo.getString("title"));
+                movieValues.put(MovieEntry.COLUMN_FAVORITE, false);
+                movieValues.put(MovieEntry.COLUMN_POSTER_PATH, jo.getString("poster_path"));
+                movieValues.put(MovieEntry.COLUMN_OVERVIEW, jo.getString("overview"));
+
+                movieValues.put(MovieEntry.COLUMN_RELEASE_DATE, jo.getString("release_date"));
+                movieValues.put(MovieEntry.COLUMN_VOTE_AVERAGE, jo.getDouble("vote_average"));
+                movieValues.put(MovieEntry.COLUMN_LANGUAGE, jo.getString("original_language"));
+                long movieId=jo.getLong("id");
+                movieValues.put(MovieEntry.COLUMN_MOVIE_KEY, movieId);
+                movieValues.put(MovieEntry.COLUMN_ADULT, jo.getBoolean("adult"));
+
+
+                cVVector.add(movieValues);
+
+                // TODO: insert to the trailer database
+                // TODO: insert to the review database
+                
+                
+
+            }
+
+            //add to database
+            /*ContentValues[] cvv=(ContentValues[])cVVector.toArray();
+            if ( cVVector.size() > 0 ) {
+                mContext.getContentResolver().bulkInsert(MovieEntry.CONTENT_URI,cvv);
+
+            }*/
+
+
+
+
+
+
+
             MovieInfo[] results=new MovieInfo[arrLength];
 
             for(int i=0; i<arrLength;i++) {
@@ -177,6 +228,50 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
 
         return null;
     }
+
+    long addMovie(JSONObject jo, boolean favorite) throws JSONException {
+        long movidId;
+        long movieId=jo.getLong("id");
+
+        // check if the movie is already in the database
+        Cursor movieCursor=mContext.getContentResolver().query(MovieEntry.CONTENT_URI,new String[]{MovieEntry._ID},
+                MovieEntry.COLUMN_MOVIE_KEY+" = ?",new String[]{Long.toString(movieId)},null);
+        if(movieCursor.moveToFirst()){
+            int movieIdIndex=movieCursor.getColumnIndex(MovieEntry._ID);
+            movidId=movieCursor.getLong(movieIdIndex);
+        }
+        else{
+            // create the value
+            ContentValues movieValues = new ContentValues();
+            movieValues.put(MovieEntry.COLUMN_TITLE, jo.getString("title"));
+            movieValues.put(MovieEntry.COLUMN_FAVORITE, favorite);
+            movieValues.put(MovieEntry.COLUMN_POSTER_PATH, jo.getString("poster_path"));
+            movieValues.put(MovieEntry.COLUMN_OVERVIEW, jo.getString("overview"));
+
+            movieValues.put(MovieEntry.COLUMN_RELEASE_DATE, jo.getString("release_date"));
+            movieValues.put(MovieEntry.COLUMN_VOTE_AVERAGE, jo.getDouble("vote_average"));
+            movieValues.put(MovieEntry.COLUMN_LANGUAGE, jo.getString("original_language"));
+
+            movieValues.put(MovieEntry.COLUMN_MOVIE_KEY, jo.getLong("id"));
+            movieValues.put(MovieEntry.COLUMN_ADULT, jo.getBoolean("adult"));
+
+            // insert into database
+            Uri insertedUri=mContext.getContentResolver().insert(MovieEntry.CONTENT_URI,movieValues);
+            movidId= ContentUris.parseId(insertedUri);
+
+        }
+
+        movieCursor.close();
+        return movidId;
+
+
+
+
+
+
+    }
+
+
 
 
     //    private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
