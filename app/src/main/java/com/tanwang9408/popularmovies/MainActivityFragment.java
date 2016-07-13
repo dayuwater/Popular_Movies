@@ -127,7 +127,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void refresh(){
-        FetchMovieTask fetch=new FetchMovieTask();
+        FetchMovieTask fetch=new FetchMovieTask(getActivity(),mMovieAdapter);
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
         String option=prefs.getString(getString(R.string.pref_sort_key),getString((R.string.pref_sort_default)));
         if (option.equals("popular")) {
@@ -138,118 +138,5 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
-    // Since there is only two options for the movie list in this project, I would use boolean to indicate user choice
-    // true=popular, false=top_rated
-    public class FetchMovieTask extends AsyncTask<Boolean,Void,MovieInfo[]>{
-        private final String LOG_TAG=FetchMovieTask.class.getSimpleName();
 
-        @Override
-        protected void onPostExecute(MovieInfo[] movieInfos) {
-            super.onPostExecute(movieInfos);
-            mMovieInfo= movieInfos;
-            mMovieAdapter.clear();
-            for(MovieInfo info : movieInfos){
-                mMovieAdapter.add(info.imgUrl);
-            }
-        }
-
-        @Override
-        protected MovieInfo[] doInBackground(Boolean... params) {
-            // These two need to be declared outside the try/catch
-            // so that they can be closed in the finally block.
-            HttpURLConnection urlConnection = null;
-            BufferedReader reader = null;
-
-            // Will contain the raw JSON response as a string.
-            String forecastJsonStr = null;
-
-            try {
-                // Construct the URL for the OpenWeatherMap query
-                // Possible parameters are avaiable at OWM's forecast API page, at
-                // http://openweathermap.org/API#forecast
-                URL url;
-                if(params[0]) {
-                    Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/popular?").buildUpon().
-                            appendQueryParameter("api_key",APPID).build();
-                    url = new URL(uri.toString());
-                }
-                else{
-                    Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/top_rated?").buildUpon().
-                            appendQueryParameter("api_key",APPID).build();
-                    url = new URL(uri.toString());
-                }
-
-                // Create the request to OpenWeatherMap, and open the connection
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                // Read the input stream into a String
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
-                    buffer.append(line + "\n");
-                }
-
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
-                    return null;
-                }
-                forecastJsonStr = buffer.toString();
-
-                JSONObject jo=new JSONObject(forecastJsonStr);
-                int arrLength=jo.getJSONArray("results").length();
-                MovieInfo[] results=new MovieInfo[arrLength];
-
-                for(int i=0; i<arrLength;i++) {
-                    results[i]=new MovieInfo();
-
-
-                    results[i].title = jo.getJSONArray("results").getJSONObject(i).getString("title");
-
-
-                    results[i].imgUrl = jo.getJSONArray("results").getJSONObject(i).getString("poster_path");
-
-                    results[i].plot = jo.getJSONArray("results").getJSONObject(i).getString("overview");
-
-                    results[i].rating = jo.getJSONArray("results").getJSONObject(i).getDouble("vote_average");
-
-                    results[i].date = jo.getJSONArray("results").getJSONObject(i).getString("release_date");
-                }
-
-                return results;
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "Error ", e);
-                // If the code didn't successfully get the weather data, there's no point in attemping
-                // to parse it.
-                return null;
-            } catch (JSONException e) {
-                e.printStackTrace();
-                //return null;
-            } finally{
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (final IOException e) {
-                        Log.e(LOG_TAG, "Error closing stream", e);
-                    }
-                }
-            }
-
-            return null;
-        }
-    }
 }
