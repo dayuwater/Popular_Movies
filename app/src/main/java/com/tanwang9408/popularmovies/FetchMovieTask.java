@@ -41,7 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-public class FetchMovieTask extends AsyncTask<Boolean, Void, MovieInfo[]> {
+public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
 
     private PicassoImageAdapter mMovieAdapter;
     private MovieInfo[] mMovieInfo;
@@ -69,9 +69,13 @@ public class FetchMovieTask extends AsyncTask<Boolean, Void, MovieInfo[]> {
 
 
     @Override
-    protected MovieInfo[] doInBackground(Boolean... params) {
+    protected MovieInfo[] doInBackground(String... params) {
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
+
+        if(params.length==0){
+            return null;
+        }
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
 
@@ -83,8 +87,13 @@ public class FetchMovieTask extends AsyncTask<Boolean, Void, MovieInfo[]> {
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
             URL url;
-            if(params[0]) {
+            if(params[0].equals("popular")) {
                 Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/popular?").buildUpon().
+                        appendQueryParameter("api_key",APPID).build();
+                url = new URL(uri.toString());
+            }
+            else if(params[0].equals("toprated")){
+                Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/top_rated?").buildUpon().
                         appendQueryParameter("api_key",APPID).build();
                 url = new URL(uri.toString());
             }
@@ -92,6 +101,8 @@ public class FetchMovieTask extends AsyncTask<Boolean, Void, MovieInfo[]> {
                 Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/top_rated?").buildUpon().
                         appendQueryParameter("api_key",APPID).build();
                 url = new URL(uri.toString());
+                Log.e(LOG_TAG,"Entered favorite collection.");
+
             }
 
             // Create the request to OpenWeatherMap, and open the connection

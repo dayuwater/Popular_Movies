@@ -130,12 +130,7 @@ public class MainActivityFragment extends Fragment {
         FetchMovieTask fetch=new FetchMovieTask(getActivity(),mMovieAdapter);
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
         String option=prefs.getString(getString(R.string.pref_sort_key),getString((R.string.pref_sort_default)));
-        if (option.equals("popular")) {
-            fetch.execute(true);
-        }
-        else{
-            fetch.execute(false);
-        }
+        fetch.execute(option);
     }
 
 
