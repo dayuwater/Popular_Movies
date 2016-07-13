@@ -111,34 +111,9 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
 
             }
 
-            // Create the request to OpenWeatherMap, and open the connection
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
 
-            // Read the input stream into a String
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                // Nothing to do.
-                return null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                // But it does make debugging a *lot* easier if you print out the completed
-                // buffer for debugging.
-                buffer.append(line + "\n");
-            }
-
-            if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
-                return null;
-            }
-            forecastJsonStr = buffer.toString();
-
+            //forecastJsonStr = buffer.toString();
+            forecastJsonStr=Utility.getJsonStringFromUri(url);
             JSONObject jo=new JSONObject(forecastJsonStr);
             JSONArray movieArray=jo.getJSONArray("results");
             int arrLength=movieArray.length();
@@ -146,39 +121,49 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
             // begin enter the data into database
 
             Vector<ContentValues> cVVector = new Vector<ContentValues>(arrLength);
-            // insert into the movie database
+            //  fetch the trailer database from api
             for(int i = 0; i < arrLength; i++) {
+                long movieId=movieArray.getJSONObject(i).getLong("id");
+                // TODO: query the trailer by api
+                Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/"+movieId+"/videos?").buildUpon().
+                        appendQueryParameter("api_key",APPID).build();
+                url = new URL(uri.toString());
+                String trailerJsonStr=Utility.getJsonStringFromUri(url);
+                JSONObject trailerObject=new JSONObject(trailerJsonStr);
+                // TODO: generate the content
+                // create the value
+                ContentValues trailerValues = new ContentValues();
 
-                ContentValues movieValues = new ContentValues();
-
-                movieValues.put(MovieEntry.COLUMN_TITLE, jo.getString("title"));
-                movieValues.put(MovieEntry.COLUMN_FAVORITE, false);
-                movieValues.put(MovieEntry.COLUMN_POSTER_PATH, jo.getString("poster_path"));
-                movieValues.put(MovieEntry.COLUMN_OVERVIEW, jo.getString("overview"));
-
-                movieValues.put(MovieEntry.COLUMN_RELEASE_DATE, jo.getString("release_date"));
-                movieValues.put(MovieEntry.COLUMN_VOTE_AVERAGE, jo.getDouble("vote_average"));
-                movieValues.put(MovieEntry.COLUMN_LANGUAGE, jo.getString("original_language"));
-                long movieId=jo.getLong("id");
-                movieValues.put(MovieEntry.COLUMN_MOVIE_KEY, movieId);
-                movieValues.put(MovieEntry.COLUMN_ADULT, jo.getBoolean("adult"));
-
-
-                cVVector.add(movieValues);
-
-                // TODO: insert to the trailer database
-                // TODO: insert to the review database
-                
-                
+                cVVector.add(trailerValues);
 
             }
 
-            //add to database
+
+            //add to  trailer database
             /*ContentValues[] cvv=(ContentValues[])cVVector.toArray();
             if ( cVVector.size() > 0 ) {
                 mContext.getContentResolver().bulkInsert(MovieEntry.CONTENT_URI,cvv);
 
             }*/
+
+            // fetch the review database from api
+            for(int i = 0; i < arrLength; i++) {
+                long movieId=movieArray.getJSONObject(i).getLong("id");
+                // TODO: query the trailer by api
+                Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/"+movieId+"/reviews?").buildUpon().
+                        appendQueryParameter("api_key",APPID).build();
+                url = new URL(uri.toString());
+                String reviewJsonStr=Utility.getJsonStringFromUri(url);
+                JSONObject trailerObject=new JSONObject(reviewJsonStr);
+                // TODO: generate the content
+                // create the value
+                ContentValues trailerValues = new ContentValues();
+
+                cVVector.add(trailerValues);
+
+            }
+
+            // add to review database
 
 
 
@@ -260,6 +245,8 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
             movidId= ContentUris.parseId(insertedUri);
 
         }
+
+
 
         movieCursor.close();
         return movidId;
