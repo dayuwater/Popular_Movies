@@ -112,6 +112,8 @@ public class TestUtilities extends AndroidTestCase {
         testValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE,"2012/12/12");
         testValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_KEY, 223344);
         testValues.put(MovieContract.MovieEntry.COLUMN_ADULT, false);
+        testValues.put(MovieContract.MovieEntry.COLUMN_FAVORITE, false);
+
         testValues.put(MovieContract.MovieEntry.COLUMN_LANGUAGE, "en");
         testValues.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, "overview");
         testValues.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, "path");

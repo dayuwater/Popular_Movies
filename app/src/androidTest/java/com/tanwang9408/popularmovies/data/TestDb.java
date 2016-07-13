@@ -95,6 +95,7 @@ public class TestDb extends AndroidTestCase {
         final HashSet<String> locationColumnHashSet = new HashSet<String>();
         locationColumnHashSet.add(MovieContract.MovieEntry._ID);
         locationColumnHashSet.add(MovieContract.MovieEntry.COLUMN_ADULT);
+        locationColumnHashSet.add(MovieContract.MovieEntry.COLUMN_FAVORITE);
         locationColumnHashSet.add(MovieContract.MovieEntry.COLUMN_LANGUAGE);
         locationColumnHashSet.add(MovieContract.MovieEntry.COLUMN_MOVIE_KEY);
         locationColumnHashSet.add(MovieContract.MovieEntry.COLUMN_OVERVIEW);

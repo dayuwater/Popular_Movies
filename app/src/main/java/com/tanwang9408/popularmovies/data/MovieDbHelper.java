@@ -60,6 +60,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
 
                 MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 MovieEntry.COLUMN_VOTE_AVERAGE + " REAL NOT NULL, " +
+                MovieEntry.COLUMN_FAVORITE + " BIT NOT NULL, "+
 
 
                 // Set up the -- column as a foreign key to location table.
