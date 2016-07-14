@@ -56,6 +56,8 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
 
     private final String LOG_TAG=FetchMovieTask.class.getSimpleName();
 
+    private int option=-1;
+
     public FetchMovieTask(Context context, PicassoImageAdapter movieAdapter) {
         mContext = context;
         mMovieAdapter = movieAdapter;
@@ -97,17 +99,16 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
                 Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/popular?").buildUpon().
                         appendQueryParameter("api_key",APPID).build();
                 url = new URL(uri.toString());
+                option=0;
             }
             else if(params[0].equals("toprated")){
                 Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/top_rated?").buildUpon().
                         appendQueryParameter("api_key",APPID).build();
                 url = new URL(uri.toString());
+                option=1;
             }
             else{
-                Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/top_rated?").buildUpon().
-                        appendQueryParameter("api_key",APPID).build();
-                url = new URL(uri.toString());
-                Log.e(LOG_TAG,"Entered favorite collection.");
+               return null; // if the setting is favorite, we don't need to use api at all
 
             }
 
@@ -122,9 +123,14 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
 
 
             //  fetch the trailer database from api
+
             for(int i = 0; i < arrLength; i++) {
                 long movieId=movieArray.getJSONObject(i).getLong("id");
-                long movidId=addMovie(movieArray.getJSONObject(i),false); // the boolean won't take effect if the movie is already in the database
+                long movidId=0;
+                if(option==0)
+                    movidId=addMovie(movieArray.getJSONObject(i),false,true,false); // the boolean won't take effect if the movie is already in the database
+                else if(option==1)
+                    movidId=addMovie(movieArray.getJSONObject(i),false,false,true);
                 // TODO: query the trailer by api
                 Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/"+movieId+"/videos?").buildUpon().
                         appendQueryParameter("api_key",APPID).build();
@@ -160,6 +166,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
                 }
 
 
+
             }
 
 
@@ -170,7 +177,11 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
             for(int i = 0; i < arrLength; i++) {
                 Vector<ContentValues> cVVector = new Vector<ContentValues>(arrLength);
                 long movieId=movieArray.getJSONObject(i).getLong("id");
-                long movidId=addMovie(movieArray.getJSONObject(i),false);
+                long movidId=0;
+                if(option==0)
+                    movidId=addMovie(movieArray.getJSONObject(i),false,true,false); // the boolean won't take effect if the movie is already in the database
+                else if(option==1)
+                    movidId=addMovie(movieArray.getJSONObject(i),false,false,true);
                 // TODO: query the trailer by api
                 Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/"+movieId+"/reviews?").buildUpon().
                         appendQueryParameter("api_key",APPID).build();
@@ -254,35 +265,40 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
         return null;
     }
 
-    long addMovie(JSONObject jo, boolean favorite) throws JSONException {
+
+
+    long addMovie(JSONObject jo, boolean favorite,boolean isPopular, boolean isTopRated) throws JSONException {
         long movidId;
         long movieId=jo.getLong("id");
 
         // check if the movie is already in the database
-        Cursor movieCursor=mContext.getContentResolver().query(MovieEntry.CONTENT_URI,new String[]{MovieEntry._ID},
+        Cursor movieCursor=mContext.getContentResolver().query(MovieEntry.CONTENT_URI,null,
                 MovieEntry.COLUMN_MOVIE_KEY+" = ?",new String[]{Long.toString(movieId)},null);
         if(movieCursor.moveToFirst()){
+            int idx_pop=movieCursor.getColumnIndex(MovieEntry.COLUMN_IS_POPULAR);
+            int moviePopularity=movieCursor.getInt(idx_pop);
             int movieIdIndex=movieCursor.getColumnIndex(MovieEntry._ID);
+
+            // update the popularity and rate information
+
             movidId=movieCursor.getLong(movieIdIndex);
+            if(!Utility.sqlBitCompare(Integer.toString(moviePopularity),Boolean.toString(isPopular))){
+                movidId = getMovidId(jo, favorite, isPopular, isTopRated);
+
+            }
+            int movieTopRated=movieCursor.getInt(movieCursor.getColumnIndex(MovieEntry.COLUMN_IS_TOP_RATED));
+            if(!Utility.sqlBitCompare(Integer.toString(movieTopRated),Boolean.toString(isTopRated))){
+                movidId = getMovidId(jo, favorite, isPopular, isTopRated);
+
+            }
+
+
+
         }
         else{
             // create the value
-            ContentValues movieValues = new ContentValues();
-            movieValues.put(MovieEntry.COLUMN_TITLE, jo.getString("title"));
-            movieValues.put(MovieEntry.COLUMN_FAVORITE, favorite);
-            movieValues.put(MovieEntry.COLUMN_POSTER_PATH, jo.getString("poster_path"));
-            movieValues.put(MovieEntry.COLUMN_OVERVIEW, jo.getString("overview"));
 
-            movieValues.put(MovieEntry.COLUMN_RELEASE_DATE, jo.getString("release_date"));
-            movieValues.put(MovieEntry.COLUMN_VOTE_AVERAGE, jo.getDouble("vote_average"));
-            movieValues.put(MovieEntry.COLUMN_LANGUAGE, jo.getString("original_language"));
-
-            movieValues.put(MovieEntry.COLUMN_MOVIE_KEY, jo.getLong("id"));
-            movieValues.put(MovieEntry.COLUMN_ADULT, jo.getBoolean("adult"));
-
-            // insert into database
-            Uri insertedUri=mContext.getContentResolver().insert(MovieEntry.CONTENT_URI,movieValues);
-            movidId= ContentUris.parseId(insertedUri);
+            movidId = getMovidId(jo, favorite, isPopular, isTopRated);
 
         }
 
@@ -298,7 +314,28 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
 
     }
 
+    private long getMovidId(JSONObject jo, boolean favorite, boolean isPopular, boolean isTopRated) throws JSONException {
+        long movidId;ContentValues movieValues = new ContentValues();
+        movieValues.put(MovieEntry.COLUMN_TITLE, jo.getString("title"));
+        movieValues.put(MovieEntry.COLUMN_FAVORITE, favorite);
+        movieValues.put(MovieEntry.COLUMN_IS_POPULAR, isPopular);
+        movieValues.put(MovieEntry.COLUMN_IS_TOP_RATED, isTopRated);
 
+        movieValues.put(MovieEntry.COLUMN_POSTER_PATH, jo.getString("poster_path"));
+        movieValues.put(MovieEntry.COLUMN_OVERVIEW, jo.getString("overview"));
+
+        movieValues.put(MovieEntry.COLUMN_RELEASE_DATE, jo.getString("release_date"));
+        movieValues.put(MovieEntry.COLUMN_VOTE_AVERAGE, jo.getDouble("vote_average"));
+        movieValues.put(MovieEntry.COLUMN_LANGUAGE, jo.getString("original_language"));
+
+        movieValues.put(MovieEntry.COLUMN_MOVIE_KEY, jo.getLong("id"));
+        movieValues.put(MovieEntry.COLUMN_ADULT, jo.getBoolean("adult"));
+
+        // insert into database
+        Uri insertedUri=mContext.getContentResolver().insert(MovieEntry.CONTENT_URI,movieValues);
+        movidId= ContentUris.parseId(insertedUri);
+        return movidId;
+    }
 
 
     //    private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();

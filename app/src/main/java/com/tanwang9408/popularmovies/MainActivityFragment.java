@@ -75,7 +75,20 @@ public class MainActivityFragment extends Fragment {
         List<String> imageUrls=new ArrayList<String> ();
         GridView gridView=(GridView)rootView.findViewById(R.id.gridView_movies);
         String sortOrder= MovieContract.MovieEntry.COLUMN_TITLE+" ASC ";
-        Cursor cur=getActivity().getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,null,null,null,sortOrder);
+        Cursor cur;
+        if(Utility.getPreferredCriteria(getContext()).equals("popular")) {
+            cur = getActivity().getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null,
+                    MovieContract.MovieEntry.COLUMN_IS_POPULAR + " = 1 ", null, sortOrder);
+        }
+        else if(Utility.getPreferredCriteria(getContext()).equals("toprated")){
+            cur = getActivity().getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null,
+                    MovieContract.MovieEntry.COLUMN_IS_TOP_RATED + " = 1 ", null, sortOrder);
+
+        }
+        else{
+            cur = getActivity().getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null,
+                    MovieContract.MovieEntry.COLUMN_FAVORITE + " = 1 ", null, sortOrder);
+        }
         mMovieAdapter=new PicassoImageAdapter(getActivity(),cur,0);
         gridView.setAdapter(mMovieAdapter);
 

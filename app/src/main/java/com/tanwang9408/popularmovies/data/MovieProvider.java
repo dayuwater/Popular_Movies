@@ -79,6 +79,8 @@ public class MovieProvider extends ContentProvider {
             MovieContract.MovieEntry.TABLE_NAME+
                     "." + MovieContract.MovieEntry.COLUMN_MOVIE_KEY + " = ? ";
 
+
+
 //    //location.location_setting = ? AND date >= ?
 //    private static final String sLocationSettingWithStartDateSelection =
 //            WeatherContract.LocationEntry.TABLE_NAME+
@@ -95,6 +97,8 @@ public class MovieProvider extends ContentProvider {
             MovieContract.MovieEntry.TABLE_NAME +
                     "." + MovieContract.MovieEntry.COLUMN_MOVIE_KEY + " = ? AND " +
                     MovieContract.ReviewEntry.COLUMN_REVIEW_KEY + " = ? ";
+
+
 
     // weather -> trailer
     // location -> movie

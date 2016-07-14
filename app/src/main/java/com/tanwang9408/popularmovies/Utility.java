@@ -1,6 +1,9 @@
 package com.tanwang9408.popularmovies;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -64,4 +67,28 @@ public class Utility {
 
 
     }
+
+    public static String getPreferredCriteria(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(context.getString(R.string.pref_sort_key),
+                context.getString(R.string.pref_sort_default));
+    }
+
+    public static boolean sqlBitCompare(String a, String b){
+        if(a.equals(b)){
+            return true;
+        }
+        else{
+            if(a.equals("0")&&b.equals("false")||b.equals("0")&&a.equals("false")){
+                return true;
+            }
+            else if(a.equals("1")&&b.equals("true")||b.equals("1")&&a.equals("true")){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+     
 }

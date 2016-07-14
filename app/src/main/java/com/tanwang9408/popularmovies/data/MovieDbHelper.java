@@ -30,7 +30,7 @@ import com.tanwang9408.popularmovies.data.MovieContract.ReviewEntry;
 public class MovieDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     static final String DATABASE_NAME = "movie.db";
 
@@ -61,6 +61,8 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 MovieEntry.COLUMN_VOTE_AVERAGE + " REAL NOT NULL, " +
                 MovieEntry.COLUMN_FAVORITE + " BIT NOT NULL, "+
+                MovieEntry.COLUMN_IS_POPULAR + " BIT NOT NULL, "+
+                MovieEntry.COLUMN_IS_TOP_RATED + " BIT NOT NULL, "+
 
 
                 // Set up the -- column as a foreign key to location table.
