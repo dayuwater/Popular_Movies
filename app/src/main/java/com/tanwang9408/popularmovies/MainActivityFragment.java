@@ -79,7 +79,7 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent openDetail=new Intent(getActivity(),DetailActivity.class);
-                openDetail.putExtra(Intent.EXTRA_TEXT,mMovieInfo[position].toStringArray());
+                openDetail.putExtra(Intent.EXTRA_TEXT,FetchMovieTask.mMovieInfo[position].toStringArray());
 
                 startActivity(openDetail);
 

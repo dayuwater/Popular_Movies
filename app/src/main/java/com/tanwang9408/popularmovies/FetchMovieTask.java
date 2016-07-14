@@ -50,7 +50,7 @@ import java.util.Vector;
 public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
 
     private PicassoImageAdapter mMovieAdapter;
-    private MovieInfo[] mMovieInfo;
+    public static MovieInfo[] mMovieInfo;
     private final Context mContext;
     public static final String APPID=AppID.API;
 
