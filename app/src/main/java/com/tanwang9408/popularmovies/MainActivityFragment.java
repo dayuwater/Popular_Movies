@@ -3,6 +3,7 @@ package com.tanwang9408.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Movie;
 import android.media.Image;
 import android.net.Uri;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
+import com.tanwang9408.popularmovies.data.MovieContract;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,16 +74,18 @@ public class MainActivityFragment extends Fragment {
 
         List<String> imageUrls=new ArrayList<String> ();
         GridView gridView=(GridView)rootView.findViewById(R.id.gridView_movies);
-        mMovieAdapter=new PicassoImageAdapter(getActivity(),imageUrls);
+        String sortOrder= MovieContract.MovieEntry.COLUMN_TITLE+" ASC ";
+        Cursor cur=getActivity().getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,null,null,null,sortOrder);
+        mMovieAdapter=new PicassoImageAdapter(getActivity(),cur,0);
         gridView.setAdapter(mMovieAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent openDetail=new Intent(getActivity(),DetailActivity.class);
-                openDetail.putExtra(Intent.EXTRA_TEXT,FetchMovieTask.mMovieInfo[position].toStringArray());
-
-                startActivity(openDetail);
+//                Intent openDetail=new Intent(getActivity(),DetailActivity.class);
+//                openDetail.putExtra(Intent.EXTRA_TEXT,FetchMovieTask.mMovieInfo[position].toStringArray());
+//
+//                startActivity(openDetail);
 
             }
         });
@@ -127,6 +131,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void refresh(){
+
         FetchMovieTask fetch=new FetchMovieTask(getActivity(),mMovieAdapter);
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
         String option=prefs.getString(getString(R.string.pref_sort_key),getString((R.string.pref_sort_default)));

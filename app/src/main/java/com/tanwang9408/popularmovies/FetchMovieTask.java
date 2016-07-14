@@ -67,10 +67,10 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
     protected void onPostExecute(MovieInfo[] movieInfos) {
         super.onPostExecute(movieInfos);
         mMovieInfo= movieInfos;
-        mMovieAdapter.clear();
-        for(MovieInfo info : movieInfos){
-            mMovieAdapter.add(info.imgUrl);
-        }
+//        mMovieAdapter.clear();
+//        for(MovieInfo info : movieInfos){
+//            mMovieAdapter.add(info.imgUrl);
+//        }
     }
 
 
