@@ -120,50 +120,90 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
             // the movie data should be ready at this point
             // begin enter the data into database
 
-            Vector<ContentValues> cVVector = new Vector<ContentValues>(arrLength);
+
             //  fetch the trailer database from api
             for(int i = 0; i < arrLength; i++) {
                 long movieId=movieArray.getJSONObject(i).getLong("id");
+                long movidId=addMovie(movieArray.getJSONObject(i),false); // the boolean won't take effect if the movie is already in the database
                 // TODO: query the trailer by api
                 Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/"+movieId+"/videos?").buildUpon().
                         appendQueryParameter("api_key",APPID).build();
                 url = new URL(uri.toString());
                 String trailerJsonStr=Utility.getJsonStringFromUri(url);
                 JSONObject trailerObject=new JSONObject(trailerJsonStr);
+
                 // TODO: generate the content
                 // create the value
-                ContentValues trailerValues = new ContentValues();
+                Vector<ContentValues> cVVector = new Vector<ContentValues>(arrLength);
+                JSONArray trailerArray=trailerObject.getJSONArray("results");
+                for(int j=0; j<trailerArray.length();j++) {
+                    ContentValues trailerValues = new ContentValues();
+                    JSONObject trailerObj=trailerArray.getJSONObject(j);
+                    trailerValues.put(TrailerEntry.COLUMN_KEA_TRAILOR, trailerObj.getString("key"));
+                    trailerValues.put(TrailerEntry.COLUMN_ISO_3166_1, trailerObj.getString("iso_3166_1"));
+                    trailerValues.put(TrailerEntry.COLUMN_ISO_639_1, trailerObj.getString("iso_639_1"));
+                    trailerValues.put(TrailerEntry.COLUMN_SITE, trailerObj.getString("site"));
+                    trailerValues.put(TrailerEntry.COLUMN_MOVIE_KEY, movidId);
+                    trailerValues.put(TrailerEntry.COLUMN_TRAILER_KEY, trailerObj.getString("id"));
+                    trailerValues.put(TrailerEntry.COLUMN_NAME, trailerObj.getString("name"));
+                    trailerValues.put(TrailerEntry.COLUMN_SIZE, trailerObj.getInt("size"));
+                    trailerValues.put(TrailerEntry.COLUMN_TYPE, trailerObj.getString("type"));
 
-                cVVector.add(trailerValues);
+
+                    cVVector.add(trailerValues);
+                }
+                if ( cVVector.size() > 0 ) {
+                    ContentValues[] cvv=new ContentValues[cVVector.size()];
+                    cVVector.toArray(cvv);
+                    mContext.getContentResolver().bulkInsert(TrailerEntry.CONTENT_URI,cvv);
+
+                }
+
 
             }
 
 
-            //add to  trailer database
-            /*ContentValues[] cvv=(ContentValues[])cVVector.toArray();
-            if ( cVVector.size() > 0 ) {
-                mContext.getContentResolver().bulkInsert(MovieEntry.CONTENT_URI,cvv);
 
-            }*/
+
 
             // fetch the review database from api
             for(int i = 0; i < arrLength; i++) {
+                Vector<ContentValues> cVVector = new Vector<ContentValues>(arrLength);
                 long movieId=movieArray.getJSONObject(i).getLong("id");
+                long movidId=addMovie(movieArray.getJSONObject(i),false);
                 // TODO: query the trailer by api
                 Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/"+movieId+"/reviews?").buildUpon().
                         appendQueryParameter("api_key",APPID).build();
                 url = new URL(uri.toString());
                 String reviewJsonStr=Utility.getJsonStringFromUri(url);
-                JSONObject trailerObject=new JSONObject(reviewJsonStr);
+                JSONObject reviewObject=new JSONObject(reviewJsonStr);
                 // TODO: generate the content
-                // create the value
-                ContentValues trailerValues = new ContentValues();
+                cVVector = new Vector<ContentValues>(arrLength);
+                JSONArray reviewArray=reviewObject.getJSONArray("results");
+                for(int j=0; j<reviewArray.length();j++) {
+                    ContentValues reviewValues = new ContentValues();
+                    JSONObject reviewObj=reviewArray.getJSONObject(j);
+                    reviewValues.put(ReviewEntry.COLUMN_AUTHOR, reviewObj.getString("author"));
+                    reviewValues.put(ReviewEntry.COLUMN_CONTENT, reviewObj.getString("content"));
+                    reviewValues.put(ReviewEntry.COLUMN_URL, reviewObj.getString("url"));
 
-                cVVector.add(trailerValues);
+                    reviewValues.put(ReviewEntry.COLUMN_MOVIE_KEY, movidId);
+                    reviewValues.put(ReviewEntry.COLUMN_REVIEW_KEY, reviewObj.getString("id"));
 
+
+
+                    cVVector.add(reviewValues);
+                }
+
+                if ( cVVector.size() > 0 ) {
+                    ContentValues[] cvv=new ContentValues[cVVector.size()];
+                    cVVector.toArray(cvv);
+                    mContext.getContentResolver().bulkInsert(ReviewEntry.CONTENT_URI,cvv);
+
+                }
             }
 
-            // add to review database
+
 
 
 
