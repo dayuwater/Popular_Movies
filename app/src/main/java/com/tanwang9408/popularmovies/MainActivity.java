@@ -20,6 +20,9 @@ import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String mSortOrder;
+    private final String MOVIEFRAGMENT_TAG = "MMTAG";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,14 +30,37 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Stetho.initializeWithDefaults(this);
+        mSortOrder = Utility.getPreferredCriteria(this);
+
 
         //OkHttpClient client = new OkHttpClient();
         //client.networkInterceptors().add(new StethoInterceptor());
 
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+
+                    .add(R.id.fragment, new MainActivityFragment(), MOVIEFRAGMENT_TAG)
+                    .commit();
+        }
 
 
 
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String order = Utility.getPreferredCriteria(this);
+        // update the location in our second pane using the fragment manager
+        if (order != null && !order.equals(mSortOrder)) {
+            MainActivityFragment ff = (MainActivityFragment) getSupportFragmentManager().findFragmentByTag(MOVIEFRAGMENT_TAG);
+            if (null != ff) {
+                ff.onOrderChanged();
+            }
+            mSortOrder = order;
+        }
     }
 
     @Override

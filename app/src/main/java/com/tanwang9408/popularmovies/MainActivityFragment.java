@@ -158,6 +158,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         fetch.execute(option);
     }
 
+    void onOrderChanged() {
+        refresh();
+        getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
+    }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
