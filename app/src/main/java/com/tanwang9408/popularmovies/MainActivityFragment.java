@@ -168,20 +168,22 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
 
-        String sortOrder= MovieContract.MovieEntry.COLUMN_TITLE+" ASC ";
+        String sortOrder1= MovieContract.MovieEntry.COLUMN_LANGUAGE+" ASC ";
+        String sortOrder2= MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE+" DESC ";
+        String sortOrder3= MovieContract.MovieEntry.COLUMN_TITLE+" ASC ";
         Cursor cur;
         if(Utility.getPreferredCriteria(getContext()).equals("popular")) {
             return new CursorLoader(getActivity(),MovieContract.MovieEntry.CONTENT_URI, null,
-                    MovieContract.MovieEntry.COLUMN_IS_POPULAR + " = 1 ", null, sortOrder);
+                    MovieContract.MovieEntry.COLUMN_IS_POPULAR + " = 1 ", null, sortOrder1);
         }
         else if(Utility.getPreferredCriteria(getContext()).equals("toprated")){
             return new CursorLoader(getActivity(),MovieContract.MovieEntry.CONTENT_URI, null,
-                    MovieContract.MovieEntry.COLUMN_IS_TOP_RATED + " = 1 ", null, sortOrder);
+                    MovieContract.MovieEntry.COLUMN_IS_TOP_RATED + " = 1 ", null, sortOrder2);
 
         }
         else{
             return new CursorLoader(getActivity(),MovieContract.MovieEntry.CONTENT_URI, null,
-                    MovieContract.MovieEntry.COLUMN_FAVORITE + " = 1 ", null, sortOrder);
+                    MovieContract.MovieEntry.COLUMN_FAVORITE + " = 1 ", null, sortOrder3);
         }
 
     }
