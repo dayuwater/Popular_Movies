@@ -78,9 +78,14 @@ public class MovieContract {
         public static final String COLUMN_FAVORITE="favorite";
         public static final String COLUMN_IS_POPULAR="is_popular";
         public static final String COLUMN_IS_TOP_RATED="is_top_rated";
+        public static final String COLUMN_POPULARITY="popularity";
 
         public static Uri buildMovieUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static String getMovieIdFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
         }
 
 

@@ -330,6 +330,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
 
         movieValues.put(MovieEntry.COLUMN_MOVIE_KEY, jo.getLong("id"));
         movieValues.put(MovieEntry.COLUMN_ADULT, jo.getBoolean("adult"));
+        movieValues.put(MovieEntry.COLUMN_POPULARITY, jo.getDouble("popularity"));
 
         // insert into database
         Uri insertedUri=mContext.getContentResolver().insert(MovieEntry.CONTENT_URI,movieValues);

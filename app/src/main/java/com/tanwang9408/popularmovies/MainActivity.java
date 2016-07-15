@@ -37,10 +37,12 @@ public class MainActivity extends AppCompatActivity {
         //client.networkInterceptors().add(new StethoInterceptor());
 
         if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//
-//                    .add(R.id.fragment, new MainActivityFragment(), MOVIEFRAGMENT_TAG)
-//                    .commit();
+            getSupportFragmentManager().beginTransaction()
+
+
+
+                    .add (R.id.container,new MainActivityFragment(), MOVIEFRAGMENT_TAG)
+                    .commit();
         }
 
 

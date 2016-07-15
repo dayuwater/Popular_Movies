@@ -97,14 +97,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                 Cursor cursor = (Cursor) parent.getItemAtPosition(position);
                 if (cursor != null) {
-//                    // get the movie id
-//                    String locationSetting = Utility.getPreferredLocation(getActivity());
-//                    // get the uri of that movie id ( /.../movie/id )
-//                    Intent intent = new Intent(getActivity(), DetailActivity.class)
-//                            .setData(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-//                                    locationSetting, cursor.getLong(COL_WEATHER_DATE)
-//                            ));
-//                    startActivity(intent);
+                    // get the movie id
+                    long movieId = cursor.getLong(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_KEY));
+
+                    // get the uri of that movie id ( /.../movie/id )
+                    Intent intent = new Intent(getActivity(), DetailActivity.class)
+                            .setData(MovieContract.MovieEntry.buildMovieUri(movieId)
+                            );
+
+
+                 startActivity(intent);
                 }
 
             }
@@ -121,7 +123,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onStart() {
         super.onStart();
-        refresh();
+//        refresh();
     }
 
     private void showToastMessage(String text) {
@@ -168,7 +170,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
 
-        String sortOrder1= MovieContract.MovieEntry.COLUMN_LANGUAGE+" ASC ";
+        String sortOrder1= MovieContract.MovieEntry.COLUMN_POPULARITY+" DESC ";
         String sortOrder2= MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE+" DESC ";
         String sortOrder3= MovieContract.MovieEntry.COLUMN_TITLE+" ASC ";
         Cursor cur;

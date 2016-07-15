@@ -34,6 +34,7 @@ public class MovieProvider extends ContentProvider {
     static final int TRAILER_WITH_MOVIE = 101;
     static final int TRAILER_WITH_MOVIE_AND_TRAILER_ID = 102;
     static final int MOVIE = 300;
+    static final int MOVIE_WITH_ID=301;
     static final int REVIEW=500;
     static final int REVIEW_WITH_MOVIE = 501;
     static final int REVIEW_WITH_MOVIE_AND_REVIEW_ID = 502;
@@ -46,6 +47,7 @@ public class MovieProvider extends ContentProvider {
     static{
         sTrailerByMovieIdQueryBuilder = new SQLiteQueryBuilder();
         sReviewByMovieIdQueryBuilder=new SQLiteQueryBuilder();
+
 
         
         //This is an inner join which looks like
@@ -151,6 +153,8 @@ public class MovieProvider extends ContentProvider {
         );
     }
 
+
+
     private Cursor getReviewByMovieId(Uri uri, String[] projection, String sortOrder) {
         String movieId = MovieContract.ReviewEntry.getMovieIdFromUri(uri);
         //long startDate = MovieContract.TrailerEntry.getStartDateFromUri(uri);
@@ -224,6 +228,8 @@ public class MovieProvider extends ContentProvider {
         matcher.addURI(authority, MovieContract.PATH_REVIEW + "/*/*", REVIEW_WITH_MOVIE_AND_REVIEW_ID);
 
         matcher.addURI(authority, MovieContract.PATH_MOVIE, MOVIE);
+        matcher.addURI(authority, MovieContract.PATH_MOVIE+"/#", MOVIE_WITH_ID);
+
 
 
 
@@ -258,6 +264,8 @@ public class MovieProvider extends ContentProvider {
 //
             case MOVIE:
                 return MovieContract.MovieEntry.CONTENT_TYPE;
+            case MOVIE_WITH_ID:
+                return MovieContract.MovieEntry.CONTENT_ITEM_TYPE;
             case TRAILER:
                 return MovieContract.TrailerEntry.CONTENT_TYPE;
             case TRAILER_WITH_MOVIE:
@@ -270,6 +278,7 @@ public class MovieProvider extends ContentProvider {
                 return MovieContract.ReviewEntry.CONTENT_TYPE;
             case REVIEW_WITH_MOVIE_AND_REVIEW_ID:
                 return MovieContract.ReviewEntry.CONTENT_ITEM_TYPE;
+
 
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -304,6 +313,13 @@ public class MovieProvider extends ContentProvider {
             case MOVIE: {
                 retCursor = mOpenHelper.getReadableDatabase().query(MovieContract.MovieEntry.TABLE_NAME
                         ,projection,selection,selectionArgs,null,null,sortOrder);
+                break;
+            }
+
+            case MOVIE_WITH_ID: {
+                retCursor = mOpenHelper.getReadableDatabase().query(MovieContract.MovieEntry.TABLE_NAME
+                        ,projection, MovieContract.MovieEntry.COLUMN_MOVIE_KEY+" = ? ",new String[]
+                                {MovieContract.MovieEntry.getMovieIdFromUri(uri)},null,null,sortOrder);
                 break;
             }
 
