@@ -12,6 +12,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v4.content.CursorLoader;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +50,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String APPID=AppID.API;
     // started content provider
@@ -56,7 +60,15 @@ public class MainActivityFragment extends Fragment {
 
     private MovieInfo[] mMovieInfo;
 
+    private static final int FORECAST_LOADER = 0;
+
     public MainActivityFragment() {
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        getLoaderManager().initLoader(FORECAST_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -74,31 +86,26 @@ public class MainActivityFragment extends Fragment {
 
         List<String> imageUrls=new ArrayList<String> ();
         GridView gridView=(GridView)rootView.findViewById(R.id.gridView_movies);
-        String sortOrder= MovieContract.MovieEntry.COLUMN_TITLE+" ASC ";
-        Cursor cur;
-        if(Utility.getPreferredCriteria(getContext()).equals("popular")) {
-            cur = getActivity().getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null,
-                    MovieContract.MovieEntry.COLUMN_IS_POPULAR + " = 1 ", null, sortOrder);
-        }
-        else if(Utility.getPreferredCriteria(getContext()).equals("toprated")){
-            cur = getActivity().getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null,
-                    MovieContract.MovieEntry.COLUMN_IS_TOP_RATED + " = 1 ", null, sortOrder);
 
-        }
-        else{
-            cur = getActivity().getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null,
-                    MovieContract.MovieEntry.COLUMN_FAVORITE + " = 1 ", null, sortOrder);
-        }
-        mMovieAdapter=new PicassoImageAdapter(getActivity(),cur,0);
+
+        mMovieAdapter=new PicassoImageAdapter(getActivity(),null,0);
         gridView.setAdapter(mMovieAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent openDetail=new Intent(getActivity(),DetailActivity.class);
-//                openDetail.putExtra(Intent.EXTRA_TEXT,FetchMovieTask.mMovieInfo[position].toStringArray());
-//
-//                startActivity(openDetail);
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+
+                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+                if (cursor != null) {
+//                    // get the movie id
+//                    String locationSetting = Utility.getPreferredLocation(getActivity());
+//                    // get the uri of that movie id ( /.../movie/id )
+//                    Intent intent = new Intent(getActivity(), DetailActivity.class)
+//                            .setData(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
+//                                    locationSetting, cursor.getLong(COL_WEATHER_DATE)
+//                            ));
+//                    startActivity(intent);
+                }
 
             }
         });
@@ -152,4 +159,37 @@ public class MainActivityFragment extends Fragment {
     }
 
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+
+        String sortOrder= MovieContract.MovieEntry.COLUMN_TITLE+" ASC ";
+        Cursor cur;
+        if(Utility.getPreferredCriteria(getContext()).equals("popular")) {
+            return new CursorLoader(getActivity(),MovieContract.MovieEntry.CONTENT_URI, null,
+                    MovieContract.MovieEntry.COLUMN_IS_POPULAR + " = 1 ", null, sortOrder);
+        }
+        else if(Utility.getPreferredCriteria(getContext()).equals("toprated")){
+            return new CursorLoader(getActivity(),MovieContract.MovieEntry.CONTENT_URI, null,
+                    MovieContract.MovieEntry.COLUMN_IS_TOP_RATED + " = 1 ", null, sortOrder);
+
+        }
+        else{
+            return new CursorLoader(getActivity(),MovieContract.MovieEntry.CONTENT_URI, null,
+                    MovieContract.MovieEntry.COLUMN_FAVORITE + " = 1 ", null, sortOrder);
+        }
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mMovieAdapter.swapCursor(data);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mMovieAdapter.swapCursor(null);
+
+    }
 }
