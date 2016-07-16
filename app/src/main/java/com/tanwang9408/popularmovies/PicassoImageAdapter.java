@@ -44,19 +44,5 @@ public class PicassoImageAdapter extends CursorAdapter {
         return view;
     }
 
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//
-//        String imageUrl=getItem(position);
-//
-//        if (convertView == null) {
-//            convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_movie, parent, false);
-//        }
-//
-//        ImageView imgView=(ImageView)convertView.findViewById(R.id.grid_item_movie_imageview);
-//        Picasso.with(getContext()).setIndicatorsEnabled(true);
-//        Picasso.with(getContext()).load(IMAGE_PATH+imageUrl).into(imgView);
-//
-//        return convertView;
-//    }
+
 }
