@@ -84,7 +84,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         View rootView=inflater.inflate(R.layout.fragment_main, container, false);
 
-        List<String> imageUrls=new ArrayList<String> ();
+
         GridView gridView=(GridView)rootView.findViewById(R.id.gridView_movies);
 
 

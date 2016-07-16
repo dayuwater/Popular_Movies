@@ -131,14 +131,14 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
                     movidId=addMovie(movieArray.getJSONObject(i),false,true,false); // the boolean won't take effect if the movie is already in the database
                 else if(option==1)
                     movidId=addMovie(movieArray.getJSONObject(i),false,false,true);
-                // TODO: query the trailer by api
+                //query the trailer by api
                 Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/"+movieId+"/videos?").buildUpon().
                         appendQueryParameter("api_key",APPID).build();
                 url = new URL(uri.toString());
                 String trailerJsonStr=Utility.getJsonStringFromUri(url);
                 JSONObject trailerObject=new JSONObject(trailerJsonStr);
 
-                // TODO: generate the content
+                // generate the content
                 // create the value
                 Vector<ContentValues> cVVector = new Vector<ContentValues>(arrLength);
                 JSONArray trailerArray=trailerObject.getJSONArray("results");
@@ -182,13 +182,13 @@ public class FetchMovieTask extends AsyncTask<String, Void, MovieInfo[]> {
                     movidId=addMovie(movieArray.getJSONObject(i),false,true,false); // the boolean won't take effect if the movie is already in the database
                 else if(option==1)
                     movidId=addMovie(movieArray.getJSONObject(i),false,false,true);
-                // TODO: query the trailer by api
+                // query the trailer by api
                 Uri uri= Uri.parse("http://api.themoviedb.org/3/movie/"+movieId+"/reviews?").buildUpon().
                         appendQueryParameter("api_key",APPID).build();
                 url = new URL(uri.toString());
                 String reviewJsonStr=Utility.getJsonStringFromUri(url);
                 JSONObject reviewObject=new JSONObject(reviewJsonStr);
-                // TODO: generate the content
+                // generate the content
                 cVVector = new Vector<ContentValues>(arrLength);
                 JSONArray reviewArray=reviewObject.getJSONArray("results");
                 for(int j=0; j<reviewArray.length();j++) {
