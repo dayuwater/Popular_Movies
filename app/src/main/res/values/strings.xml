@@ -9,6 +9,8 @@
     <string name="pref_sort_dialog">Please choose the sort order you want</string>
     <string name="pref_sort_default">popular</string>
     <string name="string_of_ten">/10</string>
+    <string name="string_trailers_title">Trailers</string>
+    <string name="string_reviews_title">Reviews</string>
 
     <string-array
         name="pref_sort_values">
