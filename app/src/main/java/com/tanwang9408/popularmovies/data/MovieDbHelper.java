@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// used WeatherDbHelper.java in Sunshine as the boilerplate for this file
 package com.tanwang9408.popularmovies.data;
 
 import android.content.Context;
@@ -66,9 +68,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 MovieEntry.COLUMN_POPULARITY + " REAL NOT NULL, " +
 
 
-                // Set up the -- column as a foreign key to location table.
-                //" FOREIGN KEY (" + WeatherEntry.COLUMN_LOC_KEY + ") REFERENCES " +
-                //LocationEntry.TABLE_NAME + " (" + LocationEntry._ID + "), " +
+
 
                 // To assure the application have just one movie entry per id
                 // , it's created a UNIQUE constraint with REPLACE strategy

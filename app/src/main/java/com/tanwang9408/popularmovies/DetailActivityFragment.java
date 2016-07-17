@@ -1,5 +1,7 @@
 package com.tanwang9408.popularmovies;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -204,7 +206,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, final Cursor data) {
 
         // load detail cursor
         if(loader.getId()==DETAIL_LOADER) {
@@ -241,11 +243,25 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(favoriteButton.getText().equals(getString(R.string.mark_as_favorite))) {
+                    if(data.getInt(data.getColumnIndex(MovieEntry.COLUMN_FAVORITE))==1) {
                         favoriteButton.setText(getString(R.string.unfavorite));
+                        ContentValues cv=new ContentValues();
+                        cv.put(MovieEntry.COLUMN_FAVORITE,false);
+
+                        getActivity().getContentResolver().update(MovieEntry.CONTENT_URI,cv,
+                                MovieEntry.COLUMN_MOVIE_KEY+" = ? ",
+                                new String[]{data.getString(data.getColumnIndex(MovieEntry.COLUMN_MOVIE_KEY))});
                     }
                     else{
                         favoriteButton.setText(getString(R.string.mark_as_favorite));
+
+                        ContentValues cv=new ContentValues();
+                        cv.put(MovieEntry.COLUMN_FAVORITE,true);
+
+                        getActivity().getContentResolver().update(MovieEntry.CONTENT_URI,cv,
+                                MovieEntry.COLUMN_MOVIE_KEY+" = ? ",
+                                new String[]{data.getString(data.getColumnIndex(MovieEntry.COLUMN_MOVIE_KEY))});
+
                     }
                 }
             });

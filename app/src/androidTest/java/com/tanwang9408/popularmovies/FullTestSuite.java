@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// All of the test files are boilerplated from the tests in Sunshine
 package com.tanwang9408.popularmovies;
 
 import android.test.suitebuilder.TestSuiteBuilder;

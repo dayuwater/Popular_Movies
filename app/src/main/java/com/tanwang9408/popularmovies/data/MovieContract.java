@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// used WeatherContract.java in Sunshine as the boilerplate for this file
 package com.tanwang9408.popularmovies.data;
 
 import android.content.ContentResolver;
