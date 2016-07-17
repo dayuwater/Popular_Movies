@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -169,6 +170,27 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                     .into(imageView);
             TextView plotView = (TextView) getView().findViewById(R.id.plotView);
             plotView.setText(data.getString(data.getColumnIndex(MovieEntry.COLUMN_OVERVIEW)));
+
+            final Button favoriteButton=(Button)getView().findViewById(R.id.button_favorite);
+            if(data.getInt(data.getColumnIndex(MovieEntry.COLUMN_FAVORITE))==0) {
+                favoriteButton.setText(getString(R.string.mark_as_favorite));
+
+            }
+            else{
+                favoriteButton.setText(getString(R.string.unfavorite));
+            }
+
+            favoriteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(favoriteButton.getText().equals(getString(R.string.mark_as_favorite))) {
+                        favoriteButton.setText(getString(R.string.unfavorite));
+                    }
+                    else{
+                        favoriteButton.setText(getString(R.string.mark_as_favorite));
+                    }
+                }
+            });
         }
         else if(loader.getId()==TRAILER_LOADER) {
 
