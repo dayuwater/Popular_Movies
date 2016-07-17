@@ -13,6 +13,7 @@
     <string name="string_reviews_title">Reviews</string>
     <string name="mark_as_favorite">Mark as Favorite</string>
     <string name="unfavorite">Unfavorite this movie</string>
+    <string name="action_share">Share</string>
 
     <string-array
         name="pref_sort_values">
