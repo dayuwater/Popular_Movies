@@ -1,6 +1,7 @@
 package com.tanwang9408.popularmovies;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -96,6 +98,23 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
         return shareIntent;
 
+    }
+
+    private void openTrailerURLinBrowser(String key) {
+
+
+
+        String fullUrl="https://www.youtube.com/watch?v="+key;
+
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(fullUrl));
+
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d(LOG_TAG, "Couldn't call " + fullUrl + ", no receiving apps installed!");
+        }
     }
 
     @Override
@@ -247,7 +266,22 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
             listViewTrailer.setAdapter(mTrailerAdapter);
 
-            //TODO: set click listener
+            //set click listener
+            listViewTrailer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView parent, View view, int position, long id) {
+                    Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+                    if (cursor != null) {
+                        // get the trailer youtube key
+                        String key = cursor.getString(cursor.getColumnIndex(MovieContract.TrailerEntry.COLUMN_KEA_TRAILOR));
+                        openTrailerURLinBrowser(key);
+
+
+                    }
+
+                }
+            });
+
 
         }
 
@@ -264,7 +298,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
             listViewReview.setAdapter(mReviewAdapter);
 
-            //TODO: set click listener
+
 
         }
 
@@ -281,4 +315,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         mReviewAdapter.swapCursor(null);
 
     }
+
+
 }
