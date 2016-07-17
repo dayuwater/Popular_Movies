@@ -82,9 +82,18 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");
-        mTrailerAdapter.getItem(0);
-        shareIntent.putExtra(Intent.EXTRA_TEXT,
-               POPULAR_MOVIE_SHARE_HASHTAG);
+        Cursor data;
+        if(mTrailerAdapter.getItem(0)!=null) {
+            data = (Cursor) mTrailerAdapter.getItem(0);
+            shareIntent.putExtra(Intent.EXTRA_TEXT,"https://www.youtube.com/watch?v="+
+                    data.getString(data.getColumnIndex(MovieContract.TrailerEntry.COLUMN_KEA_TRAILOR))+POPULAR_MOVIE_SHARE_HASHTAG);
+        }
+        // in case we don't have a trailer for a movie, we will just share the title of that movie
+        else{
+            shareIntent.putExtra(Intent.EXTRA_TEXT,getActivity().getTitle()+POPULAR_MOVIE_SHARE_HASHTAG);
+        }
+
+
         return shareIntent;
 
     }
