@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     private String mSortOrder;
     private final String MOVIEFRAGMENT_TAG = "MMTAG";
+    private final String DETAILFRAGMENT_TAG = "DFTAG";
+    private boolean mTwoPane;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +38,26 @@ public class MainActivity extends AppCompatActivity {
         //OkHttpClient client = new OkHttpClient();
         //client.networkInterceptors().add(new StethoInterceptor());
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
+        if(findViewById(R.id.movie_detail_container)!=null){
+
+            mTwoPane=true;
+
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
 
 
 
-                    .add (R.id.container,new MainActivityFragment(), MOVIEFRAGMENT_TAG)
-                    .commit();
+                        .replace (R.id.movie_detail_container,new DetailActivityFragment(), DETAILFRAGMENT_TAG)
+                        .commit();
+            }
+
+
         }
+        else{
+            mTwoPane=false;
+        }
+
+
 
 
 
@@ -56,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         String order = Utility.getPreferredCriteria(this);
         // update the location in our second pane using the fragment manager
         if (order != null && !order.equals(mSortOrder)) {
-            MainActivityFragment ff = (MainActivityFragment) getSupportFragmentManager().findFragmentByTag(MOVIEFRAGMENT_TAG);
+            MainActivityFragment ff = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid_movie);
             if (null != ff) {
                 ff.onOrderChanged();
             }
