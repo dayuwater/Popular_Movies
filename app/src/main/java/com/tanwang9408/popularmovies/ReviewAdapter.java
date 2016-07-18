@@ -41,9 +41,9 @@ public class ReviewAdapter extends CursorAdapter {
         contentView.setText(cursor.getString(idx_content));
 
 
-        int idx_uRL= cursor.getColumnIndex(MovieContract.ReviewEntry.COLUMN_URL);
-        TextView uRLView=(TextView)view.findViewById(R.id.list_item_review_url);
-        uRLView.setText(cursor.getString(idx_uRL));
+//        int idx_uRL= cursor.getColumnIndex(MovieContract.ReviewEntry.COLUMN_URL);
+//        TextView uRLView=(TextView)view.findViewById(R.id.list_item_review_url);
+//        uRLView.setText(cursor.getString(idx_uRL));
 
 
 

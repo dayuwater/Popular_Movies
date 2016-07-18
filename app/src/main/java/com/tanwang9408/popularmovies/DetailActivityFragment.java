@@ -57,6 +57,8 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        mTrailerAdapter = new TrailerAdapter(getActivity(), null, 0);
+        mReviewAdapter = new ReviewAdapter(getActivity(), null, 0);
 
 
         super.onCreate(savedInstanceState);
@@ -146,8 +148,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        mTrailerAdapter = new TrailerAdapter(getActivity(), null, 0);
-        mReviewAdapter = new ReviewAdapter(getActivity(), null, 0);
+
         Log.v(LOG_TAG, "In onCreateLoader");
         Intent intent = getActivity().getIntent();
         if (intent == null) {
@@ -222,7 +223,8 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             titleView.setText(data.getString(data.getColumnIndex(MovieEntry.COLUMN_TITLE)));
 
             TextView ratingView = (TextView) getView().findViewById(R.id.ratingView);
-            ratingView.setText(data.getString(data.getColumnIndex(MovieEntry.COLUMN_VOTE_AVERAGE)));
+            float ratingText=Float.parseFloat(data.getString(data.getColumnIndex(MovieEntry.COLUMN_VOTE_AVERAGE)));
+            ratingView.setText(getActivity().getString(R.string.format_average_rating,ratingText));
             TextView releaseView = (TextView) getView().findViewById(R.id.releasedateView);
             releaseView.setText(data.getString(data.getColumnIndex(MovieEntry.COLUMN_RELEASE_DATE)));
             ImageView imageView = (ImageView) getView().findViewById(R.id.posterView);

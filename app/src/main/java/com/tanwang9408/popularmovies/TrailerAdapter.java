@@ -36,21 +36,21 @@ public class TrailerAdapter extends CursorAdapter {
         TextView nameView=(TextView)view.findViewById(R.id.list_item_trailer_name);
         nameView.setText(cursor.getString(idx_name));
 
-        int idx_size= cursor.getColumnIndex(MovieContract.TrailerEntry.COLUMN_SIZE);
-        TextView sizeView=(TextView)view.findViewById(R.id.list_item_trailer_name);
-        sizeView.setText(cursor.getString(idx_name));
-
-        int idx_site= cursor.getColumnIndex(MovieContract.TrailerEntry.COLUMN_SITE);
-        TextView siteView=(TextView)view.findViewById(R.id.list_item_trailer_site);
-        siteView.setText(cursor.getString(idx_site));
+//        int idx_size= cursor.getColumnIndex(MovieContract.TrailerEntry.COLUMN_SIZE);
+//        TextView sizeView=(TextView)view.findViewById(R.id.list_item_trailer_name);
+//        sizeView.setText(cursor.getString(idx_name));
+//
+//        int idx_site= cursor.getColumnIndex(MovieContract.TrailerEntry.COLUMN_SITE);
+//        TextView siteView=(TextView)view.findViewById(R.id.list_item_trailer_site);
+//        siteView.setText(cursor.getString(idx_site));
 
         int idx_type= cursor.getColumnIndex(MovieContract.TrailerEntry.COLUMN_TYPE);
         TextView typeView=(TextView)view.findViewById(R.id.list_item_trailer_type);
         typeView.setText(cursor.getString(idx_type));
 
-        int idx_key= cursor.getColumnIndex(MovieContract.TrailerEntry.COLUMN_KEA_TRAILOR);
-        TextView keyView=(TextView)view.findViewById(R.id.list_item_trailer_key);
-        keyView.setText(cursor.getString(idx_key));
+//        int idx_key= cursor.getColumnIndex(MovieContract.TrailerEntry.COLUMN_KEA_TRAILOR);
+//        TextView keyView=(TextView)view.findViewById(R.id.list_item_trailer_key);
+//        keyView.setText(cursor.getString(idx_key));
 
 
 

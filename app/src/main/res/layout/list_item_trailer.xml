@@ -1,39 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
 
-    <TextView
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Name"
-        android:id="@+id/list_item_trailer_name"/>
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:paddingLeft="16dp">
 
-    <TextView
-        android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_media_play"
+            android:background="@color/abc_input_method_navigation_guard"
+           />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Size"
-        android:id="@+id/list_item_trailer_size"/>
+        android:layout_weight="3">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Site"
-        android:id="@+id/list_item_trailer_site"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Type"
-        android:id="@+id/list_item_trailer_type"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Key"
-        android:id="@+id/list_item_trailer_key"/>
+            android:textSize="30sp"
+            android:id="@+id/list_item_trailer_name"
+            android:paddingTop="16dp"/>
 
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:textSize="15sp"
+            android:id="@+id/list_item_trailer_type"
+            android:paddingBottom="16dp"/>
+
+
+
+
+
+
+
+    </LinearLayout>
 
 
 

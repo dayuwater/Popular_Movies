@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="app_name">Popular Movies</string>
     <string name="action_settings">Settings</string>
     <string name="refresh">Refresh</string>
@@ -30,4 +30,6 @@
         <item>Favorite</item>
 
     </string-array>
+
+    <string name="format_average_rating">Rating: <xliff:g id="rating">%1$1.1f</xliff:g> / 10 </string>
 </resources>
