@@ -65,6 +65,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public MainActivityFragment() {
     }
 
+    public interface CallBack{
+        public void onItemSelected(Uri movieUri);
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(FORECAST_LOADER, null, this);
@@ -100,13 +104,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                     // get the movie id
                     long movieId = cursor.getLong(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_KEY));
 
-                    // get the uri of that movie id ( /.../movie/id )
-                    Intent intent = new Intent(getActivity(), DetailActivity.class)
-                            .setData(MovieContract.MovieEntry.buildMovieUri(movieId)
-                            );
+                    ((CallBack)getActivity()).onItemSelected(MovieContract.MovieEntry.buildMovieUri(movieId));
 
 
-                 startActivity(intent);
+
                 }
 
             }

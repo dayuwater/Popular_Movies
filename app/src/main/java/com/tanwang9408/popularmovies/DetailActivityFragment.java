@@ -50,6 +50,9 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private static final int TRAILER_LOADER = 1;
     private static final int REVIEW_LOADER = 2;
 
+    static final String DETAIL_URI = "URI";
+    private Uri mUri;
+
 
     public DetailActivityFragment() {
     }
@@ -121,10 +124,30 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         }
     }
 
+    void onMovieChanged(long newMovieId) {
+        // replace the uri, since the location has changed
+        Uri uri = mUri;
+        if (null != uri) {
+            String movieId = MovieContract.MovieEntry.getMovieIdFromUri(uri);
+            Uri updatedUri = MovieContract.MovieEntry.buildMovieUri(Long.parseLong(movieId));
+            mUri = updatedUri;
+            getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+            getLoaderManager().restartLoader(TRAILER_LOADER, null, this);
+            getLoaderManager().restartLoader(REVIEW_LOADER, null, this);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mUri = arguments.getParcelable(DetailActivityFragment.DETAIL_URI);
+        }
+         
         View rootView= inflater.inflate(R.layout.fragment_detail, container, false);
+
 
 
 
@@ -149,61 +172,57 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        Log.v(LOG_TAG, "In onCreateLoader");
-        Intent intent = getActivity().getIntent();
-        if (intent == null||intent.getData()==null) {
-            return null;
+        if(null!=mUri) {
+
+            // Now create and return a CursorLoader that will take care of
+            // creating a Cursor for the data being displayed.
+            String movieId = MovieEntry.getMovieIdFromUri(mUri);
+
+            // build the uri for trailer
+
+            Uri trailerUri = MovieContract.TrailerEntry.buildTrailerMovie(movieId);
+
+            // build the uri for movie
+            Uri reviewUri = MovieContract.ReviewEntry.buildReviewMovie(movieId);
+
+
+            if (id == DETAIL_LOADER) {
+
+                return new CursorLoader(
+                        getActivity(),
+                        mUri,
+                        null,
+
+                        null,
+                        null,
+                        null
+                );
+            } else if (id == TRAILER_LOADER) {
+
+                return new CursorLoader(
+                        getActivity(),
+                        trailerUri,
+                        null,
+
+                        null,
+                        null,
+                        null
+                );
+
+            } else {
+                return new CursorLoader(
+                        getActivity(),
+                        reviewUri,
+                        null,
+
+                        null,
+                        null,
+                        null
+                );
+
+            }
         }
-
-        // Now create and return a CursorLoader that will take care of
-        // creating a Cursor for the data being displayed.
-        String movieId=MovieEntry.getMovieIdFromUri(intent.getData());
-
-        // build the uri for trailer
-
-        Uri trailerUri= MovieContract.TrailerEntry.buildTrailerMovie(movieId);
-
-        // build the uri for movie
-        Uri reviewUri= MovieContract.ReviewEntry.buildReviewMovie(movieId);
-
-
-        if(id==DETAIL_LOADER) {
-
-            return new CursorLoader(
-                    getActivity(),
-                    intent.getData(),
-                    null,
-
-                    null,
-                    null,
-                    null
-            );
-        }
-        else if(id==TRAILER_LOADER){
-
-            return new CursorLoader(
-                    getActivity(),
-                    trailerUri,
-                    null,
-
-                    null,
-                    null,
-                    null
-            );
-
-        }
-        else{
-            return new CursorLoader(
-                    getActivity(),
-                    reviewUri,
-                    null,
-
-                    null,
-                    null,
-                    null
-            );
-
-        }
+        return null;
     }
 
     @Override
