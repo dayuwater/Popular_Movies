@@ -59,8 +59,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private ArrayAdapter<String> mMovieAdapter2;
 
     private MovieInfo[] mMovieInfo;
+    private int mPosition;
+    private GridView mGridView;
 
     private static final int FORECAST_LOADER = 0;
+    public static final String SELECTED_KEY="scroll_position";
 
     public MainActivityFragment() {
     }
@@ -89,13 +92,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         View rootView=inflater.inflate(R.layout.fragment_main, container, false);
 
 
-        GridView gridView=(GridView)rootView.findViewById(R.id.gridView_movies);
+        mGridView=(GridView)rootView.findViewById(R.id.gridView_movies);
 
 
         mMovieAdapter=new PicassoImageAdapter(getActivity(),null,0);
-        gridView.setAdapter(mMovieAdapter);
+        mGridView.setAdapter(mMovieAdapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
 
@@ -109,9 +112,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
                 }
+                mPosition=position;
 
             }
         });
+
+        if(savedInstanceState!=null && savedInstanceState.containsKey(SELECTED_KEY)){
+            mPosition=savedInstanceState.getInt(SELECTED_KEY);
+        }
 
 
 
@@ -119,6 +127,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(mPosition!=GridView.INVALID_POSITION){
+            outState.putInt(SELECTED_KEY,mPosition);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -194,6 +210,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mMovieAdapter.swapCursor(data);
+        if(mPosition!=GridView.INVALID_POSITION){
+            mGridView.smoothScrollToPosition(mPosition);
+        }
 
     }
 
