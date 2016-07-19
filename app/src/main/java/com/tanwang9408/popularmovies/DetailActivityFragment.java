@@ -39,7 +39,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
     private static final String IMAGE_PATH= "http://image.tmdb.org/t/p/w185";
     private String mMovieString;
-    private ShareActionProvider mShareActionProvider;
+
     private TrailerAdapter mTrailerAdapter;
     private ReviewAdapter mReviewAdapter;
     private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
@@ -49,7 +49,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private static final int DETAIL_LOADER = 0;
     private static final int TRAILER_LOADER = 1;
     private static final int REVIEW_LOADER = 2;
-
+    private ShareActionProvider mShareActionProvider;
     static final String DETAIL_URI = "URI";
     private Uri mUri;
 
@@ -70,11 +70,13 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
+        inflater.inflate(R.menu.menu_detail,menu);
+
 
 
         MenuItem menuitem=menu.findItem(R.id.action_share);
 
-        ShareActionProvider mShareActionProvider =
+        mShareActionProvider =
                 (ShareActionProvider) MenuItemCompat.getActionProvider(menuitem);
 
         if (mShareActionProvider != null) {
@@ -342,6 +344,10 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             ListView listViewReview = (ListView) getView().findViewById(R.id.reviewView);
 
             listViewReview.setAdapter(mReviewAdapter);
+
+            if (mShareActionProvider != null) {
+                mShareActionProvider.setShareIntent(createShareForecastIntent());
+            }
 
 
 

@@ -1,9 +1,12 @@
 package com.tanwang9408.popularmovies;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.media.Image;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +29,15 @@ public class PicassoImageAdapter extends CursorAdapter {
         super(context,c,flags);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ImageView imgView=(ImageView)view;
         int idx_img_url=cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTER_PATH);
         Picasso.with(context).setIndicatorsEnabled(true);
-        Picasso.with(context).load(IMAGE_PATH+cursor.getString(idx_img_url)).into(imgView);
+
+        Picasso.with(context).load(IMAGE_PATH+cursor.getString(idx_img_url)).
+               into(imgView);
 
 
 
