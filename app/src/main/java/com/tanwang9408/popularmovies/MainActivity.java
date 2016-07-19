@@ -1,6 +1,7 @@
 package com.tanwang9408.popularmovies;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,26 +16,78 @@ import com.bumptech.glide.Glide;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.squareup.picasso.Picasso;
+import com.tanwang9408.popularmovies.data.MovieContract;
 
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityFragment.CallBack {
+
+    private String mSortOrder;
+    private final String MOVIEFRAGMENT_TAG = "MMTAG";
+    private final String DETAILFRAGMENT_TAG = "DFTAG";
+    private boolean mTwoPane;
+    private long mLastMovieId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
         Stetho.initializeWithDefaults(this);
+        mSortOrder = Utility.getPreferredCriteria(this);
+
+
 
         //OkHttpClient client = new OkHttpClient();
         //client.networkInterceptors().add(new StethoInterceptor());
 
+        if(findViewById(R.id.movie_detail_container)!=null){
+
+            mTwoPane=true;
+
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+
+
+
+                        .replace (R.id.movie_detail_container,new DetailActivityFragment(), DETAILFRAGMENT_TAG)
+                        .commit();
+
+
+            }
+
+
+        }
+        else{
+            mTwoPane=false;
+        }
 
 
 
 
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String order = Utility.getPreferredCriteria(this);
+
+        // update the location in our second pane using the fragment manager
+        if (order != null && !order.equals(mSortOrder)) {
+            MainActivityFragment ff = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid_movie);
+            if (null != ff) {
+                ff.onOrderChanged();
+            }
+            DetailActivityFragment df = (DetailActivityFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+            if (null != df) {
+                //df.onMovieChanged();
+            }
+            mSortOrder = order;
+        }
     }
 
     @Override
@@ -59,5 +112,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(Uri movieUri) {
+        mLastMovieId=Long.parseLong(MovieContract.MovieEntry.getMovieIdFromUri(movieUri));
+        if (mTwoPane) {
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            Bundle args = new Bundle();
+            args.putParcelable(DetailActivityFragment.DETAIL_URI, movieUri);
+
+            DetailActivityFragment fragment = new DetailActivityFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.movie_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, DetailActivity.class)
+                    .setData(movieUri);
+            startActivity(intent);
+        }
+
     }
 }

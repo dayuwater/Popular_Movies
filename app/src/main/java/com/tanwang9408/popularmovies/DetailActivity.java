@@ -16,8 +16,17 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        if (savedInstanceState == null) {
+            Bundle arguments=new Bundle();
+            arguments.putParcelable(DetailActivityFragment.DETAIL_URI,getIntent().getData());
+
+            DetailActivityFragment fragment=new DetailActivityFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.movie_detail_container, fragment)
+                    .commit();
+        }
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -27,7 +36,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        //getMenuInflater().inflate(R.menu.menu_detail, menu);
 
 
         // Locate MenuItem with ShareActionProvider
