@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.squareup.picasso.Picasso;
+import com.tanwang9408.popularmovies.data.MovieContract;
 
 import okhttp3.OkHttpClient;
 
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
                         .replace (R.id.movie_detail_container,new DetailActivityFragment(), DETAILFRAGMENT_TAG)
                         .commit();
+
+
             }
 
 
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     protected void onResume() {
         super.onResume();
         String order = Utility.getPreferredCriteria(this);
+
         // update the location in our second pane using the fragment manager
         if (order != null && !order.equals(mSortOrder)) {
             MainActivityFragment ff = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid_movie);
@@ -112,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
     @Override
     public void onItemSelected(Uri movieUri) {
+        mLastMovieId=Long.parseLong(MovieContract.MovieEntry.getMovieIdFromUri(movieUri));
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a

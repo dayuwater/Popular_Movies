@@ -59,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/mark_as_favorite"
                 android:id="@+id/button_favorite"
+                android:visibility="gone"
                 android:layout_gravity="bottom|right" />
 
 
@@ -80,8 +81,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/string_trailers_title"
-                android:textSize="40sp" />
+
+                android:textSize="40sp"
+                android:id="@+id/trailer_title_view"/>
 
             <ListView
                 android:layout_width="match_parent"
@@ -104,8 +106,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/string_reviews_title"
-                android:textSize="40sp" />
+
+                android:textSize="40sp"
+                android:id="@+id/review_title_view"/>
 
             <ListView
                 android:layout_width="match_parent"

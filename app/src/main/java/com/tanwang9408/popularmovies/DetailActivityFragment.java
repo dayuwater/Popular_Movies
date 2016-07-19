@@ -252,7 +252,15 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             TextView plotView = (TextView) getView().findViewById(R.id.plotView);
             plotView.setText(data.getString(data.getColumnIndex(MovieEntry.COLUMN_OVERVIEW)));
 
+            TextView trailerTitle=(TextView)getView().findViewById(R.id.trailer_title_view);
+            trailerTitle.setText(getString(R.string.string_trailers_title));
+
+            TextView reviewTitle=(TextView)getView().findViewById(R.id.review_title_view);
+            reviewTitle.setText(getString(R.string.string_reviews_title));
+
+
             final Button favoriteButton=(Button)getView().findViewById(R.id.button_favorite);
+            favoriteButton.setVisibility(View.VISIBLE);
             if(data.getInt(data.getColumnIndex(MovieEntry.COLUMN_FAVORITE))==0) {
                 favoriteButton.setText(getString(R.string.mark_as_favorite));
 
